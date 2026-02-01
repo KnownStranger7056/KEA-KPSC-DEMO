@@ -1,0 +1,1726 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>@Night-NewBie</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --primary: #6a5af9; --secondary: #5041d5; --accent: #f72585;
+    --bg-light: #f4f7fc; --bg-dark: #161925;
+    --surface-light: #ffffff; --surface-dark: #232a40;
+    --text-light: #212529; --text-dark: #e8eaed;
+    --border-light: rgba(0, 0, 0, 0.1); --border-dark: rgba(255, 255, 255, 0.1);
+    --glass-light: rgba(255, 255, 255, 0.7); --glass-dark: rgba(35, 42, 64, 0.7);
+    --success: #20c997; --danger: #e63946; --warning: #ffb703; --info: #0096c7;
+
+    /* Dynamic Font Size Variable - Default 16px */
+    --dynamic-size: 16px;
+  }
+
+  html {
+      font-size: 14px; 
+      -webkit-text-size-adjust: 100%;
+      height: 100%;
+  }
+
+  * { 
+      box-sizing: border-box; 
+      -webkit-tap-highlight-color: transparent; 
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-light);
+    margin: 0;
+    transition: background-color 0.3s, color 0.3s;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden; 
+    height: 100%;
+    min-height: 100vh; 
+    min-height: -webkit-fill-available;
+  }
+  body.dark-mode {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+
+  /* --- Home Screen --- */
+  #home-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    padding: 0 !important; 
+    overflow-y: auto;
+  }
+  .home-header {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+  }
+  .home-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 2rem 1rem; 
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    box-shadow: none !important;
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
+    background-color: var(--surface-light);
+  }
+  body.dark-mode .home-card {
+    background-color: var(--surface-dark);
+    border-color: var(--border-dark);
+  }
+
+  /* Inner wrapper to keep text centered and readable */
+  .home-content-wrapper {
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+  }
+
+  .home-card h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+  }
+  .test-details p {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 0.8rem;
+  }
+  body.dark-mode .test-details p {
+      border-bottom-color: var(--border-dark);
+  }
+  .test-details p span:first-child {
+      font-weight: 500;
+      opacity: 0.8;
+      white-space: nowrap;
+      margin-right: 15px;
+  }
+  .test-details p span:last-child {
+      font-weight: 600;
+      text-align: right;
+      word-break: break-word; 
+  }
+  #startQuizBtn {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background-color: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      touch-action: manipulation;
+      margin-top: 10px;
+  }
+   #startQuizBtn:hover {
+      background-color: var(--secondary);
+   }
+  .home-footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 30px;
+      font-weight: 600;
+      opacity: 0.9;
+      font-size: 0.9rem;
+  }
+  .home-footer a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s;
+  }
+  .home-footer a:hover {
+      color: var(--primary);
+      text-decoration: underline;
+  }
+
+
+  /* --- Main Layout --- */
+  .quiz-layout {
+    display: block; 
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* MAIN CONTAINER */
+  .quiz-main {
+    padding: 0; 
+    position: relative;
+    height: 100vh; 
+    height: 100dvh; 
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+  }
+
+  /* --- POPUP MODAL FOR PALETTE (Replaces Sidebar) --- */
+  
+  .palette-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2000;
+      background-color: rgba(0, 0, 0, 0.7); 
+
+      display: flex; 
+      justify-content: center;
+      align-items: center;
+
+      
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+
+      
+      transition: opacity 0.2s ease-out, visibility 0s linear 0.2s;
+      will-change: opacity;
+  }
+
+  .palette-modal.show {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      transition: opacity 0.2s ease-out, visibility 0s linear 0s; 
+  }
+
+  .palette-content-box {
+      width: 90%;
+      max-width: 380px; 
+      max-height: 85vh;
+      background-color: var(--surface-light);
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+
+      /* Optimised transform animation */
+      transform: scale(0.95) translate3d(0, 10px, 0);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+      backface-visibility: hidden;
+  }
+  .palette-modal.show .palette-content-box {
+      transform: scale(1) translate3d(0, 0, 0);
+  }
+  body.dark-mode .palette-content-box {
+      background-color: var(--surface-dark);
+      border: 1px solid var(--border-dark);
+  }
+
+  .palette-header {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-light);
+  }
+  body.dark-mode .palette-header {
+      border-bottom-color: var(--border-dark);
+      background: var(--bg-dark);
+  }
+
+  .palette-body {
+      padding: 15px;
+      overflow-y: auto;
+      flex-grow: 1;
+  }
+
+  .palette-footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border-light);
+      background: var(--bg-light);
+  }
+  body.dark-mode .palette-footer {
+      border-top-color: var(--border-dark);
+      background: var(--bg-dark);
+  }
+
+
+  /* --- Shared Card Style --- */
+  .card-ui {
+    background-color: var(--surface-light);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    margin-bottom: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  }
+  body.dark-mode .card-ui {
+    background-color: var(--surface-dark);
+    border-color: var(--border-dark);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* --- Integrated Sidebar Blocks --- */
+  .sidebar-section {
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 15px;
+  }
+  body.dark-mode .sidebar-section { border-bottom-color: var(--border-dark); }
+  .sidebar-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .timer-box { text-align: center; background: rgba(0,0,0,0.03); padding: 8px; border-radius: 10px; }
+  body.dark-mode .timer-box { background: rgba(255,255,255,0.05); }
+  .timer-display { font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; line-height: 1; margin-bottom: 5px; }
+  #timeProgress { height: 6px; border-radius: 3px; }
+
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 10px; }
+  .stat-item { 
+      text-align: center; 
+      background: rgba(0,0,0,0.03); 
+      padding: 4px 2px; 
+      border-radius: 6px; 
+  }
+  body.dark-mode .stat-item { background: rgba(255,255,255,0.05); }
+  .stat-item .value { font-weight: 700; font-size: 0.9rem; line-height: 1.2; } 
+  .stat-item .label { font-size: 0.65rem; opacity: 0.7; }
+  .value.correct { color: var(--success); }
+  .value.incorrect { color: var(--danger); }
+  .value.marked { color: var(--info); }
+  .value.unattempted { color: var(--warning); }
+
+
+  /* --- Main Content Area --- */
+  .quiz-main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    flex-shrink: 0; 
+    background-color: var(--bg-light);
+    z-index: 10;
+    border-bottom: 1px solid transparent;
+  }
+  body.dark-mode .quiz-main-header {
+      background-color: var(--bg-dark);
+  }
+
+  /* Header Timer Style */
+  .header-timer {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-left: 15px;
+      margin-right: auto;
+      letter-spacing: 1px;
+      font-variant-numeric: tabular-nums;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s;
+  }
+  .header-timer:active { transform: scale(0.95); opacity: 0.8; }
+  .header-timer::after { content: '⛶'; font-size: 0.8em; margin-left: 5px; opacity: 0.5; vertical-align: middle; }
+
+  /* Trigger Button for Palette - Visible on All Screens */
+  .palette-trigger { 
+      background: none; 
+      border: none; 
+      font-size: 1.375rem; 
+      color: var(--text-light); 
+      padding: 5px; 
+      cursor: pointer; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  body.dark-mode .palette-trigger { color: var(--text-dark); }
+  .palette-trigger:hover { color: var(--primary); }
+
+  /* --- SCROLLABLE QUESTION AREA --- */
+  .quiz-content-area {
+      flex: 1; 
+      overflow-y: auto; 
+      
+      padding: 10px 0 90px 0; 
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+  }
+
+  /* Specific styling for Question Card to be Full Width (Clean Mode) */
+  .quiz-content-area .card-ui {
+      border-radius: 0; 
+      border-left: none;
+      border-right: none;
+      margin-left: 0;
+      margin-right: 0;
+      box-shadow: none;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      
+      padding: 8px 15px 15px 15px; 
+  }
+  
+  .results-container.card-ui {
+      border-radius: 12px;
+      margin: 15px; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding: 20px;
+  }
+
+  .thin-progress-bar {
+    height: 4px;
+    background-color: var(--border-light);
+    border-radius: 0; 
+    margin-bottom: 0;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  body.dark-mode .thin-progress-bar {
+      background-color: var(--border-dark);
+  }
+  .thin-progress-bar-inner {
+      height: 100%;
+      width: 0%;
+      background-color: var(--primary);
+      border-radius: 2px;
+      transition: width 0.3s ease-in-out;
+  }
+
+  /* --- DYNAMIC FONT SIZING CLASSES --- */
+  .q-text { 
+      font-size: var(--dynamic-size); 
+      font-weight: 500; 
+      margin: 0; 
+      line-height: 1.5; 
+      white-space: normal; 
+      word-wrap: break-word;
+  }
+
+  /* Context box adjustment to remove gap */
+  .q-text > .context-box:first-child {
+      margin-top: 0;
+  }
+
+  .context-box {
+      background-color: #f0f4f8;
+      border-left: 4px solid var(--info);
+      padding: 10px 12px; 
+      border-radius: 8px;
+      margin-bottom: 8px; 
+      font-size: calc(var(--dynamic-size) * 0.9);
+      line-height: 1.45;
+      color: var(--text-light);
+      white-space: normal; 
+  }
+  body.dark-mode .context-box {
+      background-color: rgba(36, 129, 204, 0.15);
+      color: var(--text-dark);
+      border-left-color: var(--info);
+  }
+
+  .q-context-preview {
+      font-size: calc(var(--dynamic-size) * 0.9);
+      margin-bottom: 12px;
+      padding: 10px;
+      background: rgba(0,0,0,0.03);
+      border-radius: 8px;
+      white-space: normal; 
+  }
+  body.dark-mode .q-context-preview {
+      background: rgba(255,255,255,0.05);
+  }
+
+  .option-btn {
+    width: 100%; text-align: left;
+    border: 1px solid var(--border-light);
+    background: transparent; color: inherit;
+    border-radius: 10px; padding: 12px 16px;
+    margin: 6px 0; transition: .2s ease all; 
+    font-size: var(--dynamic-size);
+    cursor: pointer;
+    touch-action: manipulation;
+    user-select: none;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    white-space: normal; 
+  }
+  body.dark-mode .option-btn { border-color: var(--border-dark); }
+  .option-btn:hover { border-color: var(--primary); background: rgba(106,90,249, 0.05); transform: translateY(-1px); }
+  .option-btn.selected { background: var(--secondary); color: #fff; border-color: var(--secondary); }
+  .option-btn.correct { background: var(--success) !important; color: #fff; border-color: var(--success) !important; }
+  .option-btn.incorrect { background: var(--danger) !important; color: #fff; border-color: var(--danger) !important; }
+
+  /* User Selection Checkmark */
+  .user-check {
+      font-size: 1.1em;
+      margin-left: 10px;
+      display: none; 
+      flex-shrink: 0;
+  }
+  .option-btn.selected .user-check { display: inline-block; }
+
+  .explanation {
+    background: rgba(106,90,249, 0.05);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px; padding: 12px; margin-top: 15px;
+    font-size: calc(var(--dynamic-size) * 0.9);
+    white-space: normal; 
+  }
+
+  /* --- STATIC FONT SIZING (Header, Meta, Nav) --- */
+  .q-meta-container {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+  }
+  /* Meta text keeps static size */
+  .q-meta-container h5 { font-size: 1.1rem; margin-bottom: 0; } 
+
+  .q-timer {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: rgba(106,90,249, 0.1);
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+  }
+
+  /* Marking Indicator Style */
+  .q-marks {
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: rgba(0,0,0,0.05);
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-light);
+  }
+  body.dark-mode .q-marks { background: rgba(255,255,255,0.1); color: var(--text-dark); }
+
+  /* Marks Colors for Review Mode */
+  .q-marks.positive { color: var(--success); background: rgba(32, 201, 151, 0.1); }
+  .q-marks.negative { color: var(--danger); background: rgba(230, 57, 70, 0.1); }
+
+  .q-accuracy {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--success);
+      background: rgba(32, 201, 151, 0.1);
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+  }
+  body.dark-mode .q-timer { color: #9d8fff; background: rgba(106,90,249, 0.2); }
+  body.dark-mode .q-accuracy { color: #4ade80; background: rgba(32, 201, 151, 0.2); }
+
+  /* --- Fixed Bottom Navigation (ABSOLUTE POSITIONING FIX) --- */
+  .quiz-nav-buttons { 
+      position: absolute; 
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex; 
+      justify-content: space-between; 
+      margin: 0;
+      padding: 15px 20px;
+      border-top: 1px solid var(--border-light);
+      background: var(--surface-light);
+      z-index: 500;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+  }
+  body.dark-mode .quiz-nav-buttons {
+      border-top-color: var(--border-dark);
+      background: var(--surface-dark);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+  }
+  .btn-nav { padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 0.95rem; touch-action: manipulation; }
+
+  /* --- Palette Grid --- */
+  .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); gap: 8px; }
+  .q-tile {
+    width: 100%; aspect-ratio: 1 / 1;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border-light);
+    border-radius: 8px; font-weight: 600; cursor: pointer;
+    transition: .2s ease all;
+    font-size: 0.9rem;
+    user-select: none;
+  }
+  body.dark-mode .q-tile { border-color: var(--border-dark); }
+  .q-tile:hover { transform: scale(1.08); }
+  .q-tile.current { background-color: var(--primary); color: #fff; border-color: var(--primary); }
+  .q-tile.answered { background-color: var(--success); color: #fff; border-color: var(--success); }
+  .q-tile.marked { box-shadow: 0 0 0 2px var(--info) inset; }
+  .q-tile.review-correct { background-color: var(--success); color: #fff; border-color: transparent; }
+  .q-tile.review-incorrect { background-color: var(--danger); color: #fff; border-color: transparent; }
+  .q-tile.review-unattempted { background-color: var(--warning); color: #fff; border-color: transparent; }
+
+  /* Palette Legend specific styles to fix color issues */
+  .palette-legend-box {
+      width: 14px; height: 14px;
+      border-radius: 3px;
+      margin-right: 5px;
+      border: 1px solid var(--border-light);
+  }
+  body.dark-mode .palette-legend-box { border-color: var(--border-dark); }
+  .palette-legend-box.visit { background: transparent; }
+  .palette-legend-box.done { background: var(--success); border-color: var(--success); }
+  .palette-legend-box.mark { background: transparent; border-color: var(--info); box-shadow: 0 0 0 2px var(--info) inset; }
+  .palette-legend-box.curr { background: var(--primary); border-color: var(--primary); }
+
+  /* --- Results View --- */
+  .results-container { text-align: center; }
+  .final-score { font-size: 4rem; font-weight: 800; color: var(--primary); }
+  .results-tabs .nav-link { color: inherit; opacity: 0.7; }
+  .results-tabs .nav-link.active { color: var(--primary); font-weight: 600; opacity: 1; border-bottom: 2px solid var(--primary); border-radius: 0; background: none; }
+  .chart-container { height: 250px; }
+
+  /* Leaderboard Styles */
+  .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
+  .leaderboard-table th, .leaderboard-table td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border-light); }
+  body.dark-mode .leaderboard-table th, body.dark-mode .leaderboard-table td { border-bottom-color: var(--border-dark); }
+  .leaderboard-table th { font-weight: 600; opacity: 0.8; }
+  .rank-1 { color: #FFD700; font-weight: bold; }
+  .rank-2 { color: #C0C0C0; font-weight: bold; }
+  .rank-3 { color: #CD7F32; font-weight: bold; }
+
+  /* --- Header Action Buttons --- */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+    gap: 5px;
+  }
+  .action-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .action-btn:hover {
+    transform: scale(1.1);
+    background-color: rgba(0,0,0,0.05);
+  }
+  body.dark-mode .action-btn {
+    color: var(--text-dark);
+  }
+  body.dark-mode .action-btn:hover {
+    background-color: rgba(255,255,255,0.1);
+  }
+
+  /* Single Font Button Style */
+  #fontToggleBtn {
+      font-weight: 700;
+      font-family: serif;
+      width: auto;
+      padding: 0 10px;
+  }
+
+  #languageSwitch button {
+    font-weight: 700;
+    min-width: 50px;
+    padding: 0 5px;
+    height: 36px;
+    border-radius: 8px;
+    background-color: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--text-light);
+    box-shadow: none;
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  body.dark-mode #languageSwitch button {
+    background-color: transparent;
+    border-color: var(--border-dark);
+    color: var(--text-dark);
+  }
+  #languageSwitch button:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+  }
+
+  /* --- Responsive Design (Mobile) --- */
+  @media (max-width: 992px) {
+    
+    .header-timer { font-size: 1rem; margin-left: 10px; }
+
+    .quiz-main-header {
+        padding: 15px 15px 10px 15px; 
+    }
+
+    /* Mobile Fixed Bottom Nav handled by main absolute styling */
+    .quiz-nav-buttons {
+        padding: 15px 15px;
+    }
+
+    .home-card, .results-container {
+        border-radius: 12px; 
+        margin: 20px;
+        width: auto;
+    }
+
+    /* Ensure home-card overrides general mobile margin rules to stay full width */
+    .home-card {
+        margin: 0;
+        border-radius: 0;
+        width: 100%;
+    }
+  }
+  
+  /* --- Image Optimization for Telegram Content --- */
+  img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 10px auto;
+      border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div id="home-screen">
+    <h1 class="home-header">Night™</h1>
+    <div class="card-ui home-card">
+        <div class="home-content-wrapper">
+            <h2>Test</h2>
+            <div class="test-details">
+                <p><span>Topic</span> <span id="homeTopic">Topic Name Here</span></p>
+                <p><span>Q.</span> <span id="homeQuestions">0</span></p>
+                <p><span>Timer</span> <span id="homeTime">0 Minutes</span></p>
+                <p><span>N.Mark</span> <span id="homeNegative">0</span></p>
+            </div>
+            <button id="startQuizBtn">Start</button>
+        </div>
+    </div>
+    <footer class="home-footer">
+        <!-- Clickable Links -->
+        <a href="https://t.me/AI_quiz_bot_pro" target="_blank">@AI_quiz_bot_pro</a>
+        <a href="https://t.me/elite_quiz_bot" target="_blank">@elite_quiz_bot</a>
+    </footer>
+</div>
+
+
+<div id="quiz-screen" style="display: none;">
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/269/269.wav" preload="auto"></audio>
+    <audio id="swipeSound" src="https://assets.mixkit.co/active_storage/sfx/1897/1897.wav" preload="auto"></audio>
+    <audio id="correctSound" src="https://assets.mixkit.co/active_storage/sfx/2870/2870.wav" preload="auto"></audio>
+    <audio id="wrongSound" src="https://assets.mixkit.co/active_storage/sfx/2964/2964.wav" preload="auto"></audio>
+
+    <div class="quiz-layout">
+      <!-- MAIN CONTENT AREA -->
+      <main class="quiz-main">
+        <div class="quiz-main-header">
+          <!-- Spacer or Logo -->
+          <div class="quiz-brand fw-bold text-primary m-0" style="font-size: 1.1rem;">N I G H T</div>
+
+          <!-- MAIN HEADER TIMER (Fullscreen Toggle Integrated) -->
+          <div class="header-timer" id="headerTimerDisp" title="Click to Toggle Fullscreen">00:00</div>
+
+          <div class="header-actions">
+              <div id="languageSwitch">
+                  <button id="langToggleBtn">BILI</button>
+              </div>
+              <button class="action-btn" id="fontToggleBtn" aria-label="Cycle font size">Aa+</button>
+              <button class="action-btn" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+          </div>
+
+          <!-- PALETTE TOGGLE (Visible on ALL devices) -->
+          <button class="palette-trigger ms-2" id="openPaletteBtn" aria-label="Open Question Palette">
+              <i class="fas fa-th-large"></i>
+          </button>
+        </div>
+
+        <div class="thin-progress-bar">
+            <div id="thinProgressBarInner" class="thin-progress-bar-inner"></div>
+        </div>
+
+        <div class="quiz-content-area">
+            <div id="questionArea"></div>
+            <div id="resultsContainer" class="results-container card-ui" style="display: none;"></div>
+        </div>
+
+        <div id="quizNav" class="quiz-nav-buttons" style="display: none;"></div>
+
+      </main>
+    </div>
+
+    <!-- POPUP MODAL PALETTE (Replaces Sidebar) -->
+    <div class="palette-modal" id="paletteModal">
+        <div class="palette-content-box">
+            <div class="palette-header">
+                <h5 class="fw-bold m-0">Quiz Control</h5>
+                <button class="palette-trigger" id="closePaletteBtn"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="palette-body">
+                <!-- Integrated Timer & Stats Section -->
+                <div class="sidebar-section">
+                    <div class="timer-box mb-3">
+                        <div class="timer-display"><span id="minutes">00</span>:<span id="seconds">00</span></div>
+                        <div class="progress mt-2" style="height: 6px;">
+                          <div id="timeProgress" class="progress-bar bg-primary" style="width:100%"></div>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="value correct" id="statAnswered">0</div>
+                            <div class="label">Answered</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="value unattempted" id="statUnanswered">0</div>
+                            <div class="label">Left</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="value marked" id="statMarked">0</div>
+                            <div class="label">Marked</div>
+                        </div>
+                         <div class="stat-item">
+                            <div class="value" id="statTotal">0</div>
+                            <div class="label">Total</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Palette Grid -->
+                <h6 class="fw-bold mb-3 mt-2">Question Palette</h6>
+                <div class="palette-grid" id="qList"></div>
+            </div>
+
+            <div class="palette-footer">
+                <div class="d-flex flex-wrap gap-2 small text-muted mb-3 justify-content-center">
+                    <div class="d-flex align-items-center"><div class="palette-legend-box visit"></div> Visit</div>
+                    <div class="d-flex align-items-center"><div class="palette-legend-box done"></div> Done</div>
+                    <div class="d-flex align-items-center"><div class="palette-legend-box mark"></div> Mark</div>
+                    <div class="d-flex align-items-center"><div class="palette-legend-box curr"></div> Curr</div>
+                </div>
+                <button id="submitBtn" class="btn btn-primary w-100 py-2 fw-bold">
+                    <i class="fas fa-paper-plane me-2"></i>Submit Quiz
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Placeholder quizData, will be replaced by Python
+const quizData = {
+  "settings": {
+    "topic": "KEA / KPSC PYQ DEMO",
+    "totalTimeSec": 600,
+    "negativeMarkPerWrong": 0.25
+  },
+  "questions": [
+    {
+      "text": "<b>Q1.</b> \u29be There are four prime number written in ascending order. The product of the first three is 385 and that of the last three is 1001. The last number is: \u3164 \u3164\u3164[# KPSC VO-2026 ] / \u29be \u0c8f\u0cb0\u0cbf\u0c95\u0cc6 \u0c95\u0ccd\u0cb0\u0cae\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf \u0ca8\u0cbe\u0cb2\u0ccd\u0c95\u0cc1 \u0c85\u0cb5\u0cbf\u0cad\u0cbe\u0c9c\u0ccd\u0caf \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cac\u0cb0\u0cc6\u0caf\u0cb2\u0cbe\u0c97\u0cbf\u0ca6\u0cc6. \u0cae\u0cca\u0ca6\u0cb2\u0ca8\u0cc7 \u0cae\u0cc2\u0cb0\u0cb0 \u0c97\u0cc1\u0ca3\u0cb2\u0cac\u0ccd\u0ca7 385 \u0c86\u0c97\u0cbf\u0ca6\u0cc6 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c95\u0cca\u0ca8\u0cc6\u0caf \u0cae\u0cc2\u0cb0\u0cb0 \u0c97\u0cc1\u0ca3\u0cb2\u0cac\u0ccd\u0ca71001 \u0c86\u0c97\u0cbf\u0ca6\u0cc6. \u0c86 \u0c95\u0cca\u0ca8\u0cc6\u0caf \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0caf\u0cc1____ \u0c86\u0c97\u0cbf\u0cb0\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6. \u3164\u3164[# KPSC VO-2026 ]",
+      "options": [
+        "11",
+        "13",
+        "19",
+        "17"
+      ],
+      "correctIndex": 1,
+      "explanation": "\u3164\u3164\u27bb Let the four prime numbers in ascending order be a, b, c, and d. \u3164\u3164\u27bb Product of first three (a \u00d7 b \u00d7 c) = 385. \u3164\u3164\u27bb Product of last three (b \u00d7 c \u00d7 d) = 1001. \u3164\u3164\u27bb To find common factors, divide the second product by the first: (b \u00d7 c \u00d7 d) \u00f7 (a \u00d7 b \u00d7 c) = 1001 \u00f7 385. \u3164\u3164\u27bb d/a = 13/5 (after simplifying). \u3164\u3164\u27bb Thus, a=5 and d=13. The prime numbers are 5, 7, 11, and 13. The last number is 13. | / \u3164\u3164\u27bb \u0c8f\u0cb0\u0cbf\u0c95\u0cc6 \u0c95\u0ccd\u0cb0\u0cae\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf\u0cb0\u0cc1\u0cb5 \u0ca8\u0cbe\u0cb2\u0ccd\u0c95\u0cc1 \u0c85\u0cb5\u0cbf\u0cad\u0cbe\u0c9c\u0ccd\u0caf \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0c97\u0cb3\u0cc1 a, b, c, \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 d \u0c86\u0c97\u0cbf\u0cb0\u0cb2\u0cbf. \u3164\u3164\u27bb \u0cae\u0cca\u0ca6\u0cb2 \u0cae\u0cc2\u0cb0\u0cc1 \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0c97\u0cb3 \u0c97\u0cc1\u0ca3\u0cb2\u0cac\u0ccd\u0ca7 (a \u00d7 b \u00d7 c) = 385. \u3164\u3164\u27bb \u0c95\u0cca\u0ca8\u0cc6\u0caf \u0cae\u0cc2\u0cb0\u0cc1 \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0c97\u0cb3 \u0c97\u0cc1\u0ca3\u0cb2\u0cac\u0ccd\u0ca7 (b \u00d7 c \u00d7 d) = 1001. \u3164\u3164\u27bb \u0c8e\u0cb0\u0ca1\u0ca8\u0cc7 \u0c97\u0cc1\u0ca3\u0cb2\u0cac\u0ccd\u0ca7\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0cae\u0cca\u0ca6\u0cb2\u0ca8\u0cc6\u0caf\u0ca6\u0cb0\u0cbf\u0c82\u0ca6 \u0cad\u0cbe\u0c97\u0cbf\u0cb8\u0cbf: (b \u00d7 c \u00d7 d) \u00f7 (a \u00d7 b \u00d7 c) = 1001 \u00f7 385. \u3164\u3164\u27bb d/a = 13/5. \u3164\u3164\u27bb \u0c86\u0ca6\u0ccd\u0ca6\u0cb0\u0cbf\u0c82\u0ca6, a=5 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 d=13. \u0c85\u0cb5\u0cbf\u0cad\u0cbe\u0c9c\u0ccd\u0caf \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0c97\u0cb3\u0cc1 5, 7, 11, \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 13. \u0c95\u0cca\u0ca8\u0cc6\u0caf \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0caf\u0cc1 13 \u0c86\u0c97\u0cbf\u0ca6\u0cc6. |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q2.</b> \u29be Find the missing number in the series. 4, 18, ?, 100, 180, 294, 448. \u3164 \u3164[# KPSC VO-2026 ] / \u29be \u0c88 \u0c95\u0cc6\u0cb3\u0c95\u0c82\u0ca1 \u0cb8\u0cb0\u0ca3\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0c95\u0cbe\u0ca3\u0cc6\u0caf\u0cbe\u0ca6 \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0c95\u0c82\u0ca1\u0cc1\u0cb9\u0cbf\u0ca1\u0cbf\u0caf\u0cbf\u0cb0\u0cbf. 4, 18, ?, 100, 180, 294, 448. \u3164 \u3164[# KPSC VO-2026 ]",
+      "options": [
+        "48",
+        "50",
+        "58",
+        "60"
+      ],
+      "correctIndex": 0,
+      "explanation": "\u27bb The logic of the series is n\u00b3 - n\u00b2: \u3164\u3164\u27bb 2\u00b3 - 2\u00b2 = 8 - 4 = 4. \u3164\u3164\u27bb 3\u00b3 - 3\u00b2 = 27 - 9 = 18. \u3164\u3164\u27bb 4\u00b3 - 4\u00b2 = 64 - 16 = 48. \u3164\u3164\u27bb 5\u00b3 - 5\u00b2 = 125 - 25 = 100. \u3164\u3164\u27bb 6\u00b3 - 6\u00b2 = 216 - 36 = 180. \u3164\u3164\u27bb Therefore, the missing number is 48. | / \u3164\u3164\u27bb \u0cb8\u0cb0\u0ca3\u0cbf\u0caf \u0ca4\u0cb0\u0ccd\u0c95\u0cb5\u0cc1 n\u00b3 - n\u00b2 \u0c86\u0c97\u0cbf\u0ca6\u0cc6: \u3164\u3164\u27bb 2\u00b3 - 2\u00b2 = 8 - 4 = 4. \u3164\u3164\u27bb 3\u00b3 - 3\u00b2 = 27 - 9 = 18. \u3164\u3164\u27bb 4\u00b3 - 4\u00b2 = 64 - 16 = 48. \u3164\u3164\u27bb 5\u00b3 - 5\u00b2 = 125 - 25 = 100. \u3164\u3164\u27bb 6\u00b3 - 6\u00b2 = 216 - 36 = 180. \u3164\u3164\u27bb \u0c86\u0ca6\u0ccd\u0ca6\u0cb0\u0cbf\u0c82\u0ca6, \u0c95\u0cbe\u0ca3\u0cc6\u0caf\u0cbe\u0ca6 \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0caf\u0cc1 48 \u0c86\u0c97\u0cbf\u0ca6\u0cc6. |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q3.</b> \u29be &quot;When a body is immersed fully or partially in a fluid, it experiences an upward force that is equal to the weight of the fluid displaced by it.&quot; This statement is associated with: \u3164 \u3164 \u3164[# KEA-SDA -2026 ] / \u29be \u201c\u0c92\u0c82\u0ca6\u0cc1 \u0cb5\u0cb8\u0ccd\u0ca4\u0cc1\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0c82\u0caa\u0cc2\u0cb0\u0ccd\u0ca3\u0cb5\u0cbe\u0c97\u0cbf \u0c85\u0ca5\u0cb5\u0cbe \u0cad\u0cbe\u0c97\u0cb6\u0c83 \u0ca6\u0ccd\u0cb0\u0cb5\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf \u0cae\u0cc1\u0cb3\u0cc1\u0c97\u0cbf\u0cb8\u0cbf\u0ca6\u0cbe\u0c97, \u0c85\u0ca6\u0cb0\u0cbf\u0c82\u0ca6 \u0caa\u0cb2\u0ccd\u0cb2\u0c9f\u0c97\u0cca\u0c82\u0ca1 \u0ca6\u0ccd\u0cb0\u0cb5\u0ca6 \u0ca4\u0cc2\u0c95 \u0ca6\u0cb7\u0ccd\u0c9f\u0cc7 \u0cae\u0cc7\u0cb2\u0ccd\u0cae\u0cc1\u0c96 \u0cac\u0cb2\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c85\u0ca6\u0cc1 \u0c85\u0ca8\u0cc1\u0cad\u0cb5\u0cbf\u0cb8\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6.\u201d \u0c88 \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6 \u0c87\u0ca6\u0c95\u0ccd\u0c95\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0ca6\u0cc6 : \u3164 \u3164 \u3164[# KEA-SDA -2026 ]",
+      "options": [
+        "Archimedes Principle / \u0c86\u0cb0\u0ccd\u0c95\u0cbf\u0cae\u0cbf\u0ca1\u0cc0\u0cb8\u0ccd \u0ca4\u0ca4\u0ccd\u0cb5",
+        "Newton&#x27;s Gravitational Law / \u0ca8\u0ccd\u0caf\u0cc2\u0c9f\u0ca8\u0ccd\u200c\u0ca8 \u0c97\u0cc1\u0cb0\u0cc1\u0ca4\u0ccd\u0cb5 \u0ca8\u0cbf\u0caf\u0cae",
+        "Einstein&#x27;s General Theory of Relativity / \u0c90\u0ca8\u0cb8\u0ccd\u0c9f\u0cc0\u0ca8\u0ccd \u0cb8\u0cbe\u0cae\u0cbe\u0ca8\u0ccd\u0caf \u0cb8\u0cbe\u0caa\u0cc7\u0c95\u0ccd\u0cb7 \u0cb8\u0cbf\u0ca6\u0ccd\u0ca7\u0cbe\u0c82\u0ca4",
+        "Bernoulli&#x27;s Principle / \u0cac\u0cb0\u0ccd\u0ca8\u0ccc\u0cb2\u0cbf\u0caf \u0ca8\u0cbf\u0caf\u0cae"
+      ],
+      "correctIndex": 0,
+      "explanation": "\u27bb Option 1 is correct: Archimedes&#x27; Principle states that the upward buoyant force that is exerted on a body immersed in a fluid is equal to the weight of the fluid that the body displaces. \u27bb Option 2: Newton&#x27;s Gravitational Law states that every particle attracts every other particle in the universe with a force that is directly proportional to the product of their masses. \u27bb Option 3: Einstein&#x27;s General Theory of Relativity describes gravity as the curvature of spacetime caused by mass and energy. \u27bb Option 4: Bernoulli&#x27;s Principle states that an increase in the speed of a fluid occurs simultaneously with a decrease in static pressure or a decrease in the fluid&#x27;s potential energy. | / \u27bb \u0c86\u0caf\u0ccd\u0c95\u0cc6 1 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: \u0c86\u0cb0\u0ccd\u0c95\u0cbf\u0cae\u0cbf\u0ca1\u0cc0\u0cb8\u0ccd \u0ca4\u0ca4\u0ccd\u0cb5\u0ca6 (Archimedes Principle) \u0caa\u0ccd\u0cb0\u0c95\u0cbe\u0cb0, \u0ca6\u0ccd\u0cb0\u0cb5\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf \u0cae\u0cc1\u0cb3\u0cc1\u0c97\u0cbf\u0cb0\u0cc1\u0cb5 \u0cb5\u0cb8\u0ccd\u0ca4\u0cc1\u0cb5\u0cbf\u0ca8 \u0cae\u0cc7\u0cb2\u0cc6 \u0c89\u0c82\u0c9f\u0cbe\u0c97\u0cc1\u0cb5 \u0cae\u0cc7\u0cb2\u0ccd\u0cae\u0cc1\u0c96 \u0caa\u0ccd\u0cb2\u0cb5\u0ca8 \u0cac\u0cb2\u0cb5\u0cc1 \u0c86 \u0cb5\u0cb8\u0ccd\u0ca4\u0cc1\u0cb5\u0cc1 \u0caa\u0cb2\u0ccd\u0cb2\u0c9f\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca6 \u0ca6\u0ccd\u0cb0\u0cb5\u0ca6 \u0ca4\u0cc2\u0c95\u0c95\u0ccd\u0c95\u0cc6 \u0cb8\u0cae\u0ca8\u0cbe\u0c97\u0cbf\u0cb0\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6. \u27bb \u0c86\u0caf\u0ccd\u0c95\u0cc6 2: \u0ca8\u0ccd\u0caf\u0cc2\u0c9f\u0ca8\u0ccd\u200c\u0ca8 \u0c97\u0cc1\u0cb0\u0cc1\u0ca4\u0ccd\u0cb5 \u0ca8\u0cbf\u0caf\u0cae\u0cb5\u0cc1 (Newton&#x27;s Gravitational Law) \u0cb5\u0cbf\u0cb6\u0ccd\u0cb5\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf\u0ca8 \u0caa\u0ccd\u0cb0\u0ca4\u0cbf\u0caf\u0cca\u0c82\u0ca6\u0cc1 \u0c95\u0ca3\u0cb5\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cca\u0c82\u0ca6\u0cc1 \u0c95\u0ca3\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c85\u0cb5\u0cc1\u0c97\u0cb3 \u0ca6\u0ccd\u0cb0\u0cb5\u0ccd\u0caf\u0cb0\u0cbe\u0cb6\u0cbf\u0c97\u0cb3 \u0c89\u0ca4\u0ccd\u0caa\u0ca8\u0ccd\u0ca8\u0c95\u0ccd\u0c95\u0cc6 \u0ca8\u0cc7\u0cb0 \u0c85\u0ca8\u0cc1\u0caa\u0cbe\u0ca4\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf\u0cb0\u0cc1\u0cb5 \u0cac\u0cb2\u0ca6\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0c86\u0c95\u0cb0\u0ccd\u0cb7\u0cbf\u0cb8\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6 \u0c8e\u0c82\u0ca6\u0cc1 \u0cb9\u0cc7\u0cb3\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6. \u27bb \u0c86\u0caf\u0ccd\u0c95\u0cc6 3: \u0c90\u0ca8\u0cb8\u0ccd\u0c9f\u0cc0\u0ca8\u0ccd \u0cb8\u0cbe\u0cae\u0cbe\u0ca8\u0ccd\u0caf \u0cb8\u0cbe\u0caa\u0cc7\u0c95\u0ccd\u0cb7 \u0cb8\u0cbf\u0ca6\u0ccd\u0ca7\u0cbe\u0c82\u0ca4\u0cb5\u0cc1 (Einstein&#x27;s General Theory of Relativity) \u0c97\u0cc1\u0cb0\u0cc1\u0ca4\u0ccd\u0cb5\u0cbe\u0c95\u0cb0\u0ccd\u0cb7\u0ca3\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca6\u0ccd\u0cb0\u0cb5\u0ccd\u0caf\u0cb0\u0cbe\u0cb6\u0cbf \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb6\u0c95\u0ccd\u0ca4\u0cbf\u0caf\u0cbf\u0c82\u0ca6 \u0c89\u0c82\u0c9f\u0cbe\u0c97\u0cc1\u0cb5 \u0cac\u0cbe\u0cb9\u0ccd\u0caf\u0cbe\u0c95\u0cbe\u0cb6 \u0cb8\u0cae\u0caf\u0ca6 \u0cb5\u0c95\u0ccd\u0cb0\u0ca4\u0cc6\u0caf\u0cbe\u0c97\u0cbf \u0cb5\u0cbf\u0cb5\u0cb0\u0cbf\u0cb8\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6. \u27bb \u0c86\u0caf\u0ccd\u0c95\u0cc6 4: \u0cac\u0cb0\u0ccd\u0ca8\u0ccc\u0cb2\u0cbf\u0caf \u0ca8\u0cbf\u0caf\u0cae\u0cb5\u0cc1 (Bernoulli&#x27;s Principle) \u0ca6\u0ccd\u0cb0\u0cb5\u0ca6 \u0cb5\u0cc7\u0c97 \u0cb9\u0cc6\u0c9a\u0ccd\u0c9a\u0cbe\u0ca6\u0c82\u0ca4\u0cc6 \u0c85\u0ca6\u0cb0 \u0cb8\u0ccd\u0ca5\u0cbf\u0cb0 \u0c92\u0ca4\u0ccd\u0ca4\u0ca1 \u0c85\u0ca5\u0cb5\u0cbe \u0ca6\u0ccd\u0cb0\u0cb5\u0ca6 \u0cb8\u0c82\u0cad\u0cbe\u0cb5\u0ccd\u0caf \u0cb6\u0c95\u0ccd\u0ca4\u0cbf\u0caf\u0cc1 \u0c95\u0ca1\u0cbf\u0cae\u0cc6\u0caf\u0cbe\u0c97\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6 \u0c8e\u0c82\u0ca6\u0cc1 \u0cb9\u0cc7\u0cb3\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6. |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q4.</b> \u29be In a family of six members, Raju is the father of Rohit and is married to Asha. Raju has a sister Rekha, whose daughter is Shwetha. Rohit has a sister Ritu. How is Raju related to Ritu? \u3164\u3164[# KEA-SDA -2026 ] / \u29be \u0c86\u0cb0\u0cc1 \u0c9c\u0ca8\u0cb0\u0cbf\u0cb0\u0cc1\u0cb5 \u0c92\u0c82\u0ca6\u0cc1 \u0c95\u0cc1\u0c9f\u0cc1\u0c82\u0cac\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf \u0cb0\u0cbe\u0c9c\u0cc1 \u0c8e\u0c82\u0cac\u0cc1\u0cb5\u0cb5\u0cb0\u0cc1 \u0cb0\u0ccb\u0cb9\u0cbf\u0ca4\u0ccd\u200c\u0ca8 \u0ca4\u0c82\u0ca6\u0cc6\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1, \u0c86\u0cb6\u0cbe\u0cb0\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb5\u0cbf\u0cb5\u0cbe\u0cb9\u0cb5\u0cbe\u0c97\u0cbf\u0cb0\u0cc1\u0ca4\u0ccd\u0ca4\u0cbe\u0cb0\u0cc6. \u0cb0\u0cbe\u0c9c\u0cc1\u0ca8 \u0cb8\u0cb9\u0ccb\u0ca6\u0cb0\u0cbf\u0caf \u0cb9\u0cc6\u0cb8\u0cb0\u0cc1 \u0cb0\u0cc7\u0c96\u0cbe \u0c86\u0c97\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1, \u0cb0\u0cc7\u0c96\u0cbe\u0cb0 \u0cae\u0c97\u0cb3 \u0cb9\u0cc6\u0cb8\u0cb0\u0cc1 \u0cb6\u0ccd\u0cb5\u0cc7\u0ca4\u0cbe \u0c86\u0c97\u0cbf\u0cb0\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6. \u0cb0\u0ccb\u0cb9\u0cbf\u0ca4\u0ccd\u200c \u0c97\u0cc6 \u0cb0\u0cc0\u0ca4\u0cc1 \u0c8e\u0c82\u0cac \u0cb8\u0cb9\u0ccb\u0ca6\u0cb0\u0cbf \u0c87\u0ca6\u0ccd\u0ca6\u0cbe\u0cb3\u0cc6. \u0cb9\u0cbe\u0c97\u0cbe\u0ca6\u0cb0\u0cc6 \u0cb0\u0cbe\u0c9c\u0cc1, \u0cb0\u0cc0\u0ca4\u0cc1\u0ca8\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0caf\u0cbe\u0cb5 \u0cb0\u0cc0\u0ca4\u0cbf\u0caf \u0cb0\u0c95\u0ccd\u0ca4\u0cb8\u0c82\u0cac\u0c82\u0ca7 \u0cb9\u0cca\u0c82\u0ca6\u0cbf\u0ca6\u0ccd\u0ca6\u0cbe\u0cb0\u0cc6 ? \u3164\u3164[# KEA-SDA -2026 ]",
+      "options": [
+        "Father / \u0ca4\u0c82\u0ca6\u0cc6",
+        "Son / \u0cae\u0c97",
+        "Brother / \u0cb8\u0cb9\u0ccb\u0ca6\u0cb0",
+        "Grandfather / \u0c85\u0c9c\u0ccd\u0c9c"
+      ],
+      "correctIndex": 0,
+      "explanation": "\u27bb Logic: Raju is the father of Rohit. Ritu is Rohit&#x27;s sister, which means Ritu is also the child of Raju. Therefore, Raju is the Father of Ritu. | / \u27bb \u0ca4\u0cb0\u0ccd\u0c95: \u0cb0\u0cbe\u0c9c\u0cc1 \u0cb0\u0ccb\u0cb9\u0cbf\u0ca4\u0ccd\u200c\u0ca8 \u0ca4\u0c82\u0ca6\u0cc6. \u0cb0\u0cc0\u0ca4\u0cc1 \u0cb0\u0ccb\u0cb9\u0cbf\u0ca4\u0ccd\u200c\u0ca8 \u0cb8\u0cb9\u0ccb\u0ca6\u0cb0\u0cbf, \u0c85\u0c82\u0ca6\u0cb0\u0cc6 \u0cb0\u0cc0\u0ca4\u0cc1 \u0c95\u0cc2\u0ca1 \u0cb0\u0cbe\u0c9c\u0cc1\u0ca8 \u0cae\u0c97\u0cb3\u0cc1. \u0c86\u0ca6\u0ccd\u0ca6\u0cb0\u0cbf\u0c82\u0ca6 \u0cb0\u0cbe\u0c9c\u0cc1 \u0cb0\u0cc0\u0ca4\u0cc1\u0c97\u0cc6 \u0ca4\u0c82\u0ca6\u0cc6\u0caf\u0cbe\u0c97\u0cc1\u0ca4\u0ccd\u0ca4\u0cbe\u0cb0\u0cc6. |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q5.</b> \u29be Harshavardhana was defeated in the seventh century by a: \u3164 \u3164\u3164[# KPSC VO-2026 ] / \u29be \u0c8f\u0cb3\u0ca8\u0cc7 \u0cb6\u0ca4\u0cae\u0cbe\u0ca8\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf \u0cb9\u0cb0\u0ccd\u0cb7\u0cb5\u0cb0\u0ccd\u0ca7\u0ca8\u0ca8\u0cc1 \u0caf\u0cbe\u0cb0\u0cbf\u0c82\u0ca6 \u0caa\u0cb0\u0cbe\u0cad\u0cb5\u0c97\u0cca\u0c82\u0ca1\u0cbf\u0ca6\u0ccd\u0ca6\u0ca8\u0cc1 ? \u3164\u3164[# KPSC VO-2026 ]",
+      "options": [
+        "Gurjara Pratihara king / \u0c97\u0cc1\u0cb0\u0ccd\u0c9c\u0cb0 \u0caa\u0ccd\u0cb0\u0ca4\u0cbf\u0cb9\u0cbe\u0cb0 \u0ca6\u0cca\u0cb0\u0cc6",
+        "Chalukya king / \u0c9a\u0cbe\u0cb2\u0cc1\u0c95\u0ccd\u0caf \u0ca6\u0cca\u0cb0\u0cc6",
+        "Rashtrakuta king / \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0c95\u0cc2\u0c9f \u0ca6\u0cca\u0cb0\u0cc6",
+        "Pala king / \u0caa\u0cbe\u0cb2 \u0ca6\u0cca\u0cb0\u0cc6"
+      ],
+      "correctIndex": 1,
+      "explanation": "\u3164\u3164\u27bb Harshavardhana, the ruler of Kanauj, was defeated by the Chalukya king Pulakeshin II of Badami on the banks of the Narmada River in 618 AD. \u3164\u3164\u27bb This victory checked Harsha&#x27;s southward expansion. | / \u3164\u27bb \u0c95\u0ca8\u0ccc\u0c9c\u0ccd\u200c\u0ca8 \u0ca6\u0cca\u0cb0\u0cc6 \u0cb9\u0cb0\u0ccd\u0cb7\u0cb5\u0cb0\u0ccd\u0ca7\u0ca8\u0ca8\u0cc1 \u0c95\u0ccd\u0cb0\u0cbf.\u0cb6. 618 \u0cb0\u0cb2\u0ccd\u0cb2\u0cbf \u0ca8\u0cb0\u0ccd\u0cae\u0ca6\u0cbe \u0ca8\u0ca6\u0cbf\u0caf \u0ca6\u0ca1\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf \u0cac\u0cbe\u0ca6\u0cbe\u0cae\u0cbf \u0c9a\u0cbe\u0cb2\u0cc1\u0c95\u0ccd\u0caf \u0ca6\u0cca\u0cb0\u0cc6 \u0c8e\u0cb0\u0ca1\u0ca8\u0cc7 \u0caa\u0cc1\u0cb2\u0cbf\u0c95\u0cc7\u0cb6\u0cbf\u0caf\u0cbf\u0c82\u0ca6 \u0cb8\u0ccb\u0cb2\u0cbf\u0cb8\u0cb2\u0ccd\u0caa\u0c9f\u0ccd\u0c9f\u0ca8\u0cc1. \u3164\u3164\u27bb \u0c88 \u0cb5\u0cbf\u0c9c\u0caf\u0cb5\u0cc1 \u0cb9\u0cb0\u0ccd\u0cb7\u0cb5\u0cb0\u0ccd\u0ca7\u0ca8\u0ca8 \u0ca6\u0c95\u0ccd\u0cb7\u0cbf\u0ca3\u0ca6 \u0c95\u0ca1\u0cc6\u0c97\u0cbf\u0ca8 \u0cb5\u0cbf\u0cb8\u0ccd\u0ca4\u0cb0\u0ca3\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca4\u0ca1\u0cc6\u0caf\u0cbf\u0ca4\u0cc1. |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q6.</b> \u29be The Supreme Court of British India was established under which of the following Act? \u3164 \u3164 [# KPSC VO-2026 ] / \u29be \u0cac\u0ccd\u0cb0\u0cbf\u0c9f\u0cbf\u0cb7\u0ccd \u0cad\u0cbe\u0cb0\u0ca4\u0ca6 \u0cb8\u0cc1\u0caa\u0ccd\u0cb0\u0cc0\u0c82 \u0c95\u0ccb\u0cb0\u0ccd\u0c9f\u0ca8\u0ccd\u0ca8\u0cc1 \u0c88 \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0caf\u0cbe\u0cb5 \u0c95\u0cbe\u0caf\u0ccd\u0ca6\u0cc6\u0c97\u0cc6 \u0c85\u0ca8\u0cc1\u0c97\u0cc1\u0ca3\u0cb5\u0cbe\u0c97\u0cbf \u0cb8\u0ccd\u0ca5\u0cbe\u0caa\u0cbf\u0cb8\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1 ? \u3164 [# KPSC VO-2026 ]",
+      "options": [
+        "Pit&#x27;s India Act of 1784 / 1784 \u0cb0 \u0caa\u0cbf\u0c9f\u0ccd\u0cb8\u0ccd \u0c87\u0c82\u0ca1\u0cbf\u0caf\u0cbe \u0c95\u0cbe\u0caf\u0ccd\u0ca6\u0cc6",
+        "Charter Act of 1813 / 1813 \u0cb0 \u0c9a\u0cbe\u0cb0\u0ccd\u0c9f\u0cb0\u0ccd \u0c95\u0cbe\u0caf\u0ccd\u0ca6\u0cc6",
+        "Charter Act of 1833 / 1833 \u0cb0 \u0c9a\u0cbe\u0cb0\u0ccd\u0c9f\u0cb0\u0ccd \u0c95\u0cbe\u0caf\u0ccd\u0ca6\u0cc6",
+        "Regulating Act of 1773 / 1773 \u0cb0 \u0cb0\u0cc6\u0c97\u0ccd\u0caf\u0cc1\u0cb2\u0cc7\u0c9f\u0cbf\u0c82\u0c97\u0ccd \u0c95\u0cbe\u0caf\u0ccd\u0ca6\u0cc6"
+      ],
+      "correctIndex": 3,
+      "explanation": "\u3164\u3164\u27bb The Regulating Act of 1773 provided for the establishment of a Supreme Court at Fort William, Calcutta. \u3164\u3164\u27bb It was established in 1774 with Sir Elijah Impey as the first Chief Justice. \u3164\u3164\u27bb Pit&#x27;s India Act (1784) created the Board of Control. Charter Acts of 1813 and 1833 dealt with trade monopoly and administrative centralization. | / \u3164\u3164\u27bb 1773 \u0cb0 \u0cb0\u0cc6\u0c97\u0ccd\u0caf\u0cc1\u0cb2\u0cc7\u0c9f\u0cbf\u0c82\u0c97\u0ccd \u0c95\u0cbe\u0caf\u0ccd\u0ca6\u0cc6\u0caf\u0cc1 \u0c95\u0cb2\u0ccd\u0c95\u0ca4\u0ccd\u0ca4\u0cbe\u0ca6 \u0cab\u0ccb\u0cb0\u0ccd\u0c9f\u0ccd \u0cb5\u0cbf\u0cb2\u0cbf\u0caf\u0c82\u0ca8\u0cb2\u0ccd\u0cb2\u0cbf \u0cb8\u0cc1\u0caa\u0ccd\u0cb0\u0cc0\u0c82 \u0c95\u0ccb\u0cb0\u0ccd\u0c9f\u0ccd \u0cb8\u0ccd\u0ca5\u0cbe\u0caa\u0ca8\u0cc6\u0c97\u0cc6 \u0c85\u0cb5\u0c95\u0cbe\u0cb6 \u0cae\u0cbe\u0ca1\u0cbf\u0c95\u0cca\u0c9f\u0ccd\u0c9f\u0cbf\u0ca4\u0cc1. \u3164\u3164\u27bb \u0c87\u0ca6\u0cc1 1774 \u0cb0\u0cb2\u0ccd\u0cb2\u0cbf \u0cb8\u0cb0\u0ccd \u0c8e\u0cb2\u0cbf\u0c9c\u0cbe \u0c87\u0c82\u0caa\u0cc6 \u0c85\u0cb5\u0cb0\u0ca8\u0ccd\u0ca8 \u0cae\u0cca\u0ca6\u0cb2 \u0cae\u0cc1\u0c96\u0ccd\u0caf \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0ca7\u0cc0\u0cb6\u0cb0\u0ca8\u0ccd\u0ca8\u0cbe\u0c97\u0cbf \u0cb9\u0cca\u0c82\u0ca6\u0cc1\u0cb5 \u0cae\u0cc2\u0cb2\u0c95 \u0cb8\u0ccd\u0ca5\u0cbe\u0caa\u0cbf\u0ca4\u0cb5\u0cbe\u0caf\u0cbf\u0ca4\u0cc1. \u3164\u3164\u27bb 1784 \u0cb0 \u0caa\u0cbf\u0c9f\u0ccd\u0cb8\u0ccd \u0c87\u0c82\u0ca1\u0cbf\u0caf\u0cbe \u0c95\u0cbe\u0caf\u0ccd\u0ca6\u0cc6\u0caf\u0cc1 \u0ca8\u0cbf\u0caf\u0c82\u0ca4\u0ccd\u0cb0\u0ca3 \u0cae\u0c82\u0ca1\u0cb3\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 (Board of Control) \u0cb0\u0c9a\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. 1813 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 1833 \u0cb0 \u0c9a\u0cbe\u0cb0\u0ccd\u0c9f\u0cb0\u0ccd \u0c95\u0cbe\u0caf\u0ccd\u0ca6\u0cc6\u0c97\u0cb3\u0cc1 \u0cb5\u0ccd\u0caf\u0cbe\u0caa\u0cbe\u0cb0 \u0c8f\u0c95\u0cb8\u0ccd\u0cb5\u0cbe\u0cae\u0ccd\u0caf \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c86\u0ca1\u0cb3\u0cbf\u0ca4\u0cbe\u0ca4\u0ccd\u0cae\u0c95 \u0c95\u0cc7\u0c82\u0ca6\u0ccd\u0cb0\u0cc0\u0c95\u0cb0\u0ca3\u0c95\u0ccd\u0c95\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0cb5\u0cc6. |",
+      "reference": ""
+    },
+    {
+      "text": "<img src=\"https://night-newbie-rx-tts-12.vercel.app/api/image?file_id=AgACAgUAAxkBAAELiTppfs8RxGgKrruP38VZyMdcuDDUtAACnxBrG4hK-FckMiRhg_KczAEAAwIAA3gAAzgE\" alt=\"Question Image\" style=\"max-width:100%; height:auto; border-radius:8px; margin-bottom:10px;\"><b>Q7.</b> \u29be  The triangle represents women, circle represents married people and rectangle represents employees. What is the sum of the numbers which represent women who are married but not employees ? \u3164\u3164[# KEA-SDA -2026 ] / \u3164\u29be  \u0ca4\u0ccd\u0cb0\u0cbf\u0c95\u0ccb\u0ca8\u0cb5\u0cc1 \u0cae\u0cb9\u0cbf\u0cb3\u0cc6\u0caf\u0cb0\u0ca8\u0ccd\u0ca8\u0cc1, \u0cb5\u0cc3\u0ca4\u0ccd\u0ca4\u0cb5\u0cc1 \u0cb5\u0cbf\u0cb5\u0cbe\u0cb9\u0cbf\u0ca4\u0cb0\u0ca8\u0ccd\u0ca8\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c86\u0caf\u0ca4\u0cb5\u0cc1 \u0c89\u0ca6\u0ccd\u0caf\u0ccb\u0c97\u0cb8\u0ccd\u0ca5\u0cb0\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0ccd\u0cb0\u0ca4\u0cbf\u0ca8\u0cbf\u0ca7\u0cbf\u0cb8\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6. \u0c89\u0ca6\u0ccd\u0caf\u0ccb\u0c97\u0cb8\u0ccd\u0ca5\u0cb0\u0cbe\u0c97\u0cbf\u0cb0\u0ca6 \u0cb5\u0cbf\u0cb5\u0cbe\u0cb9\u0cbf\u0ca4 \u0cae\u0cb9\u0cbf\u0cb3\u0cc6\u0caf\u0cb0\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0ccd\u0cb0\u0ca4\u0cbf\u0ca8\u0cbf\u0ca7\u0cbf\u0cb8\u0cc1\u0cb5 \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0c97\u0cb3 \u0cae\u0cca\u0ca4\u0ccd\u0ca4 \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0cc1 ?\u3164\u3164[# KEA-SDA -2026 ]",
+      "options": [
+        "11",
+        "9",
+        "7",
+        "6"
+      ],
+      "correctIndex": 3,
+      "explanation": "\u27bb We need numbers that are inside the triangle (Women) AND inside the circle (Married) but OUTSIDE the rectangle (Employees). \u27bb Based on the standard interpretation of such diagrams from the source, the number &#x27;6&#x27; (4+2) falls in the intersection of triangle and circle but not in the rectangle. | / \u27bb \u0ca8\u0cae\u0c97\u0cc6 \u0ca4\u0ccd\u0cb0\u0cbf\u0c95\u0ccb\u0ca8\u0ca6\u0cca\u0cb3\u0c97\u0cc6 (\u0cae\u0cb9\u0cbf\u0cb3\u0cc6\u0caf\u0cb0\u0cc1) \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb5\u0cc3\u0ca4\u0ccd\u0ca4\u0ca6\u0cca\u0cb3\u0c97\u0cc6 (\u0cb5\u0cbf\u0cb5\u0cbe\u0cb9\u0cbf\u0ca4\u0cb0\u0cc1) \u0c87\u0cb0\u0cc1\u0cb5 \u0c86\u0ca6\u0cb0\u0cc6 \u0c86\u0caf\u0ca4\u0ca6 \u0cb9\u0cca\u0cb0\u0c97\u0cc6 (\u0c89\u0ca6\u0ccd\u0caf\u0ccb\u0c97\u0cb8\u0ccd\u0ca5\u0cb0\u0cc1) \u0c87\u0cb0\u0cc1\u0cb5 \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6 \u0cac\u0cc7\u0c95\u0cc1. \u27bb \u0cae\u0cc2\u0cb2 \u0cb0\u0cc7\u0c96\u0cbe\u0c9a\u0cbf\u0ca4\u0ccd\u0cb0\u0ca6 \u0caa\u0ccd\u0cb0\u0c95\u0cbe\u0cb0, &#x27;6&#x27; (4+2) \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0caf\u0cc1 \u0ca4\u0ccd\u0cb0\u0cbf\u0c95\u0ccb\u0ca8 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb5\u0cc3\u0ca4\u0ccd\u0ca4 \u0c8e\u0cb0\u0ca1\u0cb0\u0cb2\u0ccd\u0cb2\u0cc2 \u0c87\u0ca6\u0ccd\u0ca6\u0cc1, \u0c86\u0caf\u0ca4\u0ca6 \u0cb9\u0cca\u0cb0\u0c97\u0cbf\u0ca6\u0cc6. |",
+      "reference": ""
+    },
+    {
+      "text": "\n            <div class=\"context-box\">\n                Q8.\u3164\u3164[# KEA-SDA -2026 ]<br> \u00bb Match the following: / \u00bb \u0cb9\u0cca\u0c82\u0ca6\u0cbf\u0cb8\u0cbf \u0cac\u0cb0\u0cc6\u0caf\u0cbf\u0cb0\u0cbf : \u3164 <br>\u3010List I\u3011 \u3164 \u3164 \u3164\u3164\u3164\u3164 \u3164\u3164\u3164\u3164\u3164 \u3164\u3010List II\u3011 <br>(Lake) \u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164 \u3164\u3164(State)\u3164<br><br>\u2502a. Fateh Sagar \u2502\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u2502i. Himachal Pradesh\u2502 <br><br>\u2502b. Nako Lake \u2502\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164 \u2502ii. Uttarakhand \u2502<br><br>\u2502c. Khecheopalri Lake \u2502\u3164 \u3164\u3164\u3164\u2502iii. Rajasthan \u2502\u3164<br><br>\u2502d. Bhimtal Lake \u2502\u3164\u3164\u3164\u3164\u3164\u3164\u3164 \u2502iv. Sikkim \u2502<br><br>\u3164\u3164\u3164\u3164<br>\u3164\u3164\u3164\u3164<br>\u3010\u0caa\u0c9f\u0ccd\u0c9f\u0cbf I\u3011 \u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3010\u0caa\u0c9f\u0ccd\u0c9f\u0cbf II\u3011 <br>(\u0cb8\u0cb0\u0ccb\u0cb5\u0cb0)\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164 (\u0cb0\u0cbe\u0c9c\u0ccd\u0caf)\u3164\u3164\u3164 \u3164<br><br>\u2502a. \u0cab\u0ca4\u0cc7 \u0cb8\u0cbe\u0c97\u0cb0 \u2502\u3164 \u3164\u3164\u3164\u3164\u3164\u3164 \u3164\u2502i. \u0cb9\u0cbf\u0cae\u0cbe\u0c9a\u0cb2\u0ccd \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6 \u2502<br><br>\u2502b. \u0ca8\u0cbe\u0c95\u0ccb \u0cb8\u0cb0\u0ccb\u0cb5\u0cb0 \u2502\u3164\u3164 \u3164\u3164\u3164 \u2502 ii. \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cbe\u0c96\u0c82\u0ca1 \u2502<br><br>\u2502c. \u0c96\u0cc7\u0c9a\u0cbf\u0caf\u0ccb\u0caa\u0cb2\u0cb0\u0cbf \u0cb8\u0cb0\u0ccb\u0cb5\u0cb0 \u2502\u3164\u3164\u2502 iii. \u0cb0\u0cbe\u0c9c\u0cb8\u0ccd\u0ca5\u0cbe\u0ca8 \u2502<br><br>\u2502d. \u0cad\u0cc0\u0cae\u0ca4\u0cbe\u0cb2\u0ccd \u0cb8\u0cb0\u0ccb\u0cb5\u0cb0 \u2502\u3164\u3164\u3164\u3164 \u2502 iv. \u0cb8\u0cbf\u0c95\u0ccd\u0c95\u0cbf\u0c82 \u2502<br>\u3164\n            </div>\n            <b>Q8.</b> Select the correct answer using the code given below / \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c86\u0caf\u0ccd\u0c95\u0cc6\u0c97\u0cb3\u0cbf\u0c82\u0ca6 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c86\u0caf\u0ccd\u0c95\u0cc6 \u0cae\u0cbe\u0ca1\u0cbf.",
+      "options": [
+        "a-iii, b-i, c-iv, d-ii",
+        "a-iii, b-i, c-ii, d-iv",
+        "a-iii, b-iv, c-i, d-ii",
+        "a-ii, b-i, c-iv, d-iii"
+      ],
+      "correctIndex": 0,
+      "explanation": "\u27bb Option 1 is correct. \u27bb a matches with iii: Fateh Sagar Lake is an artificial lake situated in the city of Udaipur, Rajasthan. \u27bb b matches with i: Nako Lake is a high-altitude lake in the Kinnaur district of Himachal Pradesh. \u27bb c matches with iv: Khecheopalri Lake, originally known as Kha-Chot-Palri, is a sacred lake located in West Sikkim. \u27bb d matches with ii: Bhimtal Lake is the largest lake in the Kumaon region, known as the &quot;lake district of India&quot;, in Uttarakhand. | / \u27bb \u0c86\u0caf\u0ccd\u0c95\u0cc6 1 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6. \u27bb a \u0caf\u0cc1 iii \u0c95\u0ccd\u0c95\u0ccd\u0c95\u0cc6 \u0cb9\u0cca\u0c82\u0ca6\u0cbf\u0c95\u0cc6\u0caf\u0cbe\u0c97\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6: \u0cab\u0ca4\u0cc7 \u0cb8\u0cbe\u0c97\u0cb0 \u0cb8\u0cb0\u0ccb\u0cb5\u0cb0\u0cb5\u0cc1 \u0cb0\u0cbe\u0c9c\u0cb8\u0ccd\u0ca5\u0cbe\u0ca8\u0ca6 \u0c89\u0ca6\u0caf\u0caa\u0cc1\u0cb0\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf\u0cb0\u0cc1\u0cb5 \u0c92\u0c82\u0ca6\u0cc1 \u0c95\u0cc3\u0ca4\u0c95 \u0cb8\u0cb0\u0ccb\u0cb5\u0cb0\u0cb5\u0cbe\u0c97\u0cbf\u0ca6\u0cc6. \u27bb b \u0caf\u0cc1 i \u0c95\u0ccd\u0c95\u0ccd\u0c95\u0cc6 \u0cb9\u0cca\u0c82\u0ca6\u0cbf\u0c95\u0cc6\u0caf\u0cbe\u0c97\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6: \u0ca8\u0cbe\u0c95\u0ccb \u0cb8\u0cb0\u0ccb\u0cb5\u0cb0\u0cb5\u0cc1 \u0cb9\u0cbf\u0cae\u0cbe\u0c9a\u0cb2\u0ccd \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0ca6 \u0c95\u0cbf\u0ca8\u0ccd\u0ca8\u0ccc\u0cb0\u0ccd \u0c9c\u0cbf\u0cb2\u0ccd\u0cb2\u0cc6\u0caf\u0cb2\u0ccd\u0cb2\u0cbf\u0cb0\u0cc1\u0cb5 \u0c8e\u0ca4\u0ccd\u0ca4\u0cb0\u0ca6 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0ca6 \u0cb8\u0cb0\u0ccb\u0cb5\u0cb0\u0cb5\u0cbe\u0c97\u0cbf\u0ca6\u0cc6. \u27bb c \u0caf\u0cc1 iv \u0c95\u0ccd\u0c95\u0ccd\u0c95\u0cc6 \u0cb9\u0cca\u0c82\u0ca6\u0cbf\u0c95\u0cc6\u0caf\u0cbe\u0c97\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6: \u0c96\u0cc7\u0c9a\u0cbf\u0caf\u0ccb\u0caa\u0cb2\u0cb0\u0cbf \u0cb8\u0cb0\u0ccb\u0cb5\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0cae\u0cc2\u0cb2\u0ca4\u0c83 \u0c96\u0cbe-\u0c9a\u0ccb\u0c9f\u0ccd-\u0caa\u0cbe\u0cb2\u0ccd\u0cb0\u0cbf \u0c8e\u0c82\u0ca6\u0cc1 \u0c95\u0cb0\u0cc6\u0caf\u0cb2\u0cbe\u0c97\u0cc1\u0ca4\u0ccd\u0ca4\u0cbf\u0ca4\u0ccd\u0ca4\u0cc1, \u0c87\u0ca6\u0cc1 \u0caa\u0cb6\u0ccd\u0c9a\u0cbf\u0cae \u0cb8\u0cbf\u0c95\u0ccd\u0c95\u0cbf\u0c82\u0ca8\u0cb2\u0ccd\u0cb2\u0cbf\u0cb0\u0cc1\u0cb5 \u0caa\u0cb5\u0cbf\u0ca4\u0ccd\u0cb0 \u0cb8\u0cb0\u0ccb\u0cb5\u0cb0\u0cb5\u0cbe\u0c97\u0cbf\u0ca6\u0cc6. \u27bb d \u0caf\u0cc1 ii \u0c95\u0ccd\u0c95\u0ccd\u0c95\u0cc6 \u0cb9\u0cca\u0c82\u0ca6\u0cbf\u0c95\u0cc6\u0caf\u0cbe\u0c97\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6: \u0cad\u0cc0\u0cae\u0ca4\u0cbe\u0cb2\u0ccd \u0cb8\u0cb0\u0ccb\u0cb5\u0cb0\u0cb5\u0cc1 \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cbe\u0c96\u0c82\u0ca1\u0ca6 \u0c95\u0cc1\u0cae\u0cbe\u0cb5\u0cc2\u0ca8\u0ccd \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0ca6 \u0c85\u0ca4\u0cbf\u0ca6\u0cca\u0ca1\u0ccd\u0ca1 \u0cb8\u0cb0\u0ccb\u0cb5\u0cb0\u0cb5\u0cbe\u0c97\u0cbf\u0ca6\u0cc6. |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q9.</b> \u29be By which amendment was the voting age of citizens changed from 21 to 18 years? \u3164 \u3164 \u3164 \u3164[# KPSC VO-2026 ] / \u29be \u0caa\u0ccd\u0cb0\u0c9c\u0cc6\u0c97\u0cb3 \u0cae\u0ca4\u0ca6\u0cbe\u0ca8\u0ca6 \u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0ca8\u0ccd\u0ca8\u0cc1 21 \u0cb0\u0cbf\u0c82\u0ca6 18 \u0cb5\u0cb0\u0ccd\u0cb7\u0c95\u0ccd\u0c95\u0cc6 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cbf\u0c82\u0ca6 \u0cac\u0ca6\u0cb2\u0cbe\u0cb5\u0ca3\u0cc6 \u0cae\u0cbe\u0ca1\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1 ?\u3164 \u3164 \u3164[# KPSC VO-2026 ]",
+      "options": [
+        "7th Constitution Amendment Act / 7 \u0ca8\u0cc7 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0ccd\u0ca6\u0cc6",
+        "42nd Constitution Amendment Act / 42 \u0ca8\u0cc7 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0ccd\u0ca6\u0cc6",
+        "55th Constitution Amendment Act / 55 \u0ca8\u0cc7 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0ccd\u0ca6\u0cc6",
+        "61st Constitution Amendment Act / 61 \u0ca8\u0cc7 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0ccd\u0ca6\u0cc6"
+      ],
+      "correctIndex": 3,
+      "explanation": "\u3164\u3164\u27bb The 61st Constitutional Amendment Act, 1988 reduced the voting age from 21 to 18 years. \u3164\u3164\u27bb It amended Article 326 of the Constitution. \u3164\u3164\u27bb 42nd Amendment is known as the &#x27;Mini Constitution&#x27;. 7th Amendment related to reorganization of states on linguistic lines. | / \u3164\u3164\u27bb 1988 \u0cb0 61 \u0ca8\u0cc7 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0ccd\u0ca6\u0cc6\u0caf\u0cc1 \u0cae\u0ca4\u0ca6\u0cbe\u0ca8\u0ca6 \u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0ca8\u0ccd\u0ca8\u0cc1 21 \u0cb0\u0cbf\u0c82\u0ca6 18 \u0cb5\u0cb0\u0ccd\u0cb7\u0c95\u0ccd\u0c95\u0cc6 \u0c87\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. \u3164\u3164\u27bb \u0c87\u0ca6\u0cc1 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0ca6 326 \u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0c9a\u0ccd\u0c9b\u0cc7\u0ca6\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0cae\u0cbe\u0ca1\u0cbf\u0ca4\u0cc1. \u3164\u3164\u27bb 42 \u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 &#x27;\u0cae\u0cbf\u0ca8\u0cbf \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8&#x27; \u0c8e\u0c82\u0ca6\u0cc1 \u0c95\u0cb0\u0cc6\u0caf\u0cb2\u0cbe\u0c97\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6. 7 \u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0cad\u0cbe\u0cb7\u0cbe\u0cb5\u0cbe\u0cb0\u0cc1 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0c97\u0cb3 \u0caa\u0cc1\u0ca8\u0cb0\u0ccd\u0cb5\u0cbf\u0c82\u0c97\u0ca1\u0ca3\u0cc6\u0c97\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0ca6\u0cc6. |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q10.</b> \u29be During the late 19th century, who among the following had started the newspaper titled &#x27;Sudharak&#x27;?\u3164 \u3164[# KPSC VO-2026 ] / \u29be 19\u0ca8\u0cc7 \u0cb6\u0ca4\u0cae\u0cbe\u0ca8\u0ca6 \u0c95\u0cca\u0ca8\u0cc6\u0caf \u0cad\u0cbe\u0c97\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf &#x27;\u0cb8\u0cc1\u0ca7\u0cbe\u0cb0\u0c95\u0ccd&#x27; (Sudharak) \u0c8e\u0c82\u0cac \u0caa\u0ca4\u0ccd\u0cb0\u0cbf\u0c95\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0c88 \u0c95\u0cc6\u0cb3\u0c95\u0c82\u0ca1\u0cb5\u0cb0\u0cb2\u0ccd\u0cb2\u0cbf \u0caf\u0cbe\u0cb0\u0cc1 \u0caa\u0ccd\u0cb0\u0cbe\u0cb0\u0c82\u0cad\u0cbf\u0cb8\u0cbf\u0ca6\u0cb0\u0cc1 ?\u3164 \u3164 \u3164[# KPSC VO-2026 ]",
+      "options": [
+        "Bal Gangadhar Tilak / \u0cac\u0cbe\u0cb2 \u0c97\u0c82\u0c97\u0cbe\u0ca7\u0cb0 \u0ca4\u0cbf\u0cb2\u0c95\u0ccd",
+        "Sen / \u0c8e\u0cb8\u0ccd.\u0c8e\u0ca8\u0ccd. \u0cb8\u0cc6\u0ca8\u0ccd",
+        "Gopal Ganesh Agarkar / \u0c97\u0ccb\u0caa\u0cbe\u0cb2 \u0c97\u0ca3\u0cc7\u0cb6 \u0c85\u0c97\u0cb0\u0ccd\u200c\u0c95\u0cb0\u0ccd\u200c",
+        "Aurobindo Ghosh / \u0c85\u0cb0\u0cac\u0cbf\u0c82\u0ca6\u0ccb \u0c98\u0ccb\u0cb7\u0ccd"
+      ],
+      "correctIndex": 2,
+      "explanation": "\u3164\u3164\u27bb Gopal Ganesh Agarkar started the newspaper &#x27;Sudharak&#x27; in 1888 after parting ways with Tilak over ideological differences. \u3164\u3164\u27bb Tilak was associated with &#x27;Kesari&#x27; and &#x27;Mahratta&#x27;. \u3164\u3164\u27bb Agarkar focused on social reform and rationalism. | / \u3164\u3164\u27bb \u0c97\u0ccb\u0caa\u0cbe\u0cb2 \u0c97\u0ca3\u0cc7\u0cb6 \u0c85\u0c97\u0cb0\u0ccd\u200c\u0c95\u0cb0\u0ccd\u200c \u0c85\u0cb5\u0cb0\u0cc1 \u0ca4\u0cbf\u0cb2\u0c95\u0ccd \u0c85\u0cb5\u0cb0\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0cb8\u0cc8\u0ca6\u0ccd\u0ca7\u0cbe\u0c82\u0ca4\u0cbf\u0c95 \u0cad\u0cbf\u0ca8\u0ccd\u0ca8\u0cbe\u0cad\u0cbf\u0caa\u0ccd\u0cb0\u0cbe\u0caf\u0ca6 \u0c95\u0cbe\u0cb0\u0ca3 1888 \u0cb0\u0cb2\u0ccd\u0cb2\u0cbf &#x27;\u0cb8\u0cc1\u0ca7\u0cbe\u0cb0\u0c95\u0ccd&#x27; \u0caa\u0ca4\u0ccd\u0cb0\u0cbf\u0c95\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0ccd\u0cb0\u0cbe\u0cb0\u0c82\u0cad\u0cbf\u0cb8\u0cbf\u0ca6\u0cb0\u0cc1. \u3164\u3164\u27bb \u0ca4\u0cbf\u0cb2\u0c95\u0ccd \u0c85\u0cb5\u0cb0\u0cc1 &#x27;\u0c95\u0cc7\u0cb8\u0cb0\u0cbf&#x27; \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 &#x27;\u0cae\u0cb0\u0cbe\u0ca0\u0cbe&#x27; \u0caa\u0ca4\u0ccd\u0cb0\u0cbf\u0c95\u0cc6\u0c97\u0cb3\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7 \u0cb9\u0cca\u0c82\u0ca6\u0cbf\u0ca6\u0ccd\u0ca6\u0cb0\u0cc1. \u3164\u3164\u27bb \u0c85\u0c97\u0cb0\u0ccd\u200c\u0c95\u0cb0\u0ccd\u200c \u0c85\u0cb5\u0cb0\u0cc1 \u0cb8\u0cbe\u0cae\u0cbe\u0c9c\u0cbf\u0c95 \u0cb8\u0cc1\u0ca7\u0cbe\u0cb0\u0ca3\u0cc6 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb5\u0cbf\u0c9a\u0cbe\u0cb0\u0caa\u0cb0\u0ca4\u0cc6\u0caf \u0cae\u0cc7\u0cb2\u0cc6 \u0c97\u0cae\u0ca8 \u0cb9\u0cb0\u0cbf\u0cb8\u0cbf\u0ca6\u0cb0\u0cc1. |",
+      "reference": ""
+    }
+  ],
+  "leaderboard": {
+    "rankings": [],
+    "question_stats": {
+      "0": {
+        "correct": 0,
+        "total": 0
+      },
+      "1": {
+        "correct": 0,
+        "total": 0
+      },
+      "2": {
+        "correct": 0,
+        "total": 0
+      },
+      "3": {
+        "correct": 0,
+        "total": 0
+      },
+      "4": {
+        "correct": 0,
+        "total": 0
+      },
+      "5": {
+        "correct": 0,
+        "total": 0
+      },
+      "6": {
+        "correct": 0,
+        "total": 0
+      },
+      "7": {
+        "correct": 0,
+        "total": 0
+      },
+      "8": {
+        "correct": 0,
+        "total": 0
+      },
+      "9": {
+        "correct": 0,
+        "total": 0
+      }
+    }
+  }
+};
+
+(function(){
+  // ----- Config from quizData.settings -----
+  const TOTAL_TIME = (quizData.settings && quizData.settings.totalTimeSec) || 20*60;
+  const NEGATIVE = (quizData.settings && quizData.settings.negativeMarkPerWrong) || (1/3);
+
+  // ----- State -----
+  const state = {
+    current: 0,
+    answers: Array(quizData.questions.length).fill(null),
+    markedForReview: Array(quizData.questions.length).fill(false),
+    startTime: new Date(),
+    timePerQ: Array(quizData.questions.length).fill(0),
+    submitted: false,
+    inReviewMode: false,
+    darkMode: false,
+    totalTime: TOTAL_TIME,
+    negativeMark: NEGATIVE,
+    avgTime: 0,
+    timerInterval: null,
+    qTimerInterval: null,
+    lastSoundIdx: -1,
+    currentLang: 'both', // 'both', 'hn', 'en'
+    currentFontSize: 16 // Default px size
+  };
+
+  // ----- Elements -----
+  const questionArea = document.getElementById('questionArea');
+  const resultsContainer = document.getElementById('resultsContainer');
+  const submitBtn = document.getElementById('submitBtn');
+  const qListGrid = document.getElementById('qList');
+  const themeToggle = document.getElementById('themeToggle');
+  const clickSound = document.getElementById('clickSound');
+  const correctSound = document.getElementById('correctSound');
+  const wrongSound = document.getElementById('wrongSound');
+  const quizNav = document.getElementById('quizNav');
+  const langToggleBtn = document.getElementById('langToggleBtn');
+
+  // ----- Init -----
+  document.addEventListener('DOMContentLoaded', () => {
+    setupHomePage();
+    document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
+  });
+
+  function setupHomePage() {
+    const totalQuestions = quizData.questions.length;
+    const totalTimeMinutes = Math.floor(quizData.settings.totalTimeSec / 60);
+    const negativeMark = quizData.settings.negativeMarkPerWrong;
+
+    // Linkify Topic Name logic
+    let rawTopic = quizData.settings.topic || "General Knowledge";
+
+    // Sanitize HTML entities to prevent XSS
+    rawTopic = rawTopic.replace(/&/g, "&amp;")
+                       .replace(/</g, "&lt;")
+                       .replace(/>/g, "&gt;")
+                       .replace(/"/g, "&quot;")
+                       .replace(/'/g, "&#039;");
+
+    // Regex to detect URLs and convert to <a> tags
+    const topicWithLinks = rawTopic.replace(/(https?:\/\/[^\s]+)/g, (url) => {
+        return `<a href="${url}" target="_blank" style="color: var(--primary); text-decoration: underline; font-weight: bold; position: relative; z-index: 10;">${url}</a>`;
+    });
+
+    document.getElementById('homeTopic').innerHTML = topicWithLinks;
+    document.getElementById('homeQuestions').textContent = totalQuestions;
+    document.getElementById('homeTime').textContent = `${totalTimeMinutes} Minutes`;
+    document.getElementById('homeNegative').textContent = negativeMark > 0 ? `-${negativeMark} per wrong answer` : "No negative marking";
+
+    initTheme(); // Init theme on home page as well
+  }
+
+  function startQuiz() {
+    document.getElementById('home-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
+    initQuiz();
+  }
+
+  function initQuiz() {
+    buildQuestionTiles();
+    renderQuestion(0);
+    initTimer();
+    initNav();
+    initFullscreen();
+    initFontSizeControls();
+    initLanguageSwitcher();
+    initSwipeNavigation();
+    updateStats();
+    quizNav.style.display = 'flex';
+  }
+
+  function initNav(){
+    submitBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to submit the quiz?')) {
+            submitQuiz();
+        }
+    });
+
+    // --- MODAL TOGGLE LOGIC ---
+    const paletteModal = document.getElementById('paletteModal');
+    const openBtn = document.getElementById('openPaletteBtn');
+    const closeBtn = document.getElementById('closePaletteBtn');
+
+    const openModal = () => paletteModal.classList.add('show');
+    const closeModal = () => paletteModal.classList.remove('show');
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    // Close if clicking outside content box
+    paletteModal.addEventListener('click', (e) => {
+        if(e.target === paletteModal) closeModal();
+    });
+
+    // keyboard
+    document.addEventListener('keydown',(e)=>{
+      if(e.target.tagName === 'INPUT') return;
+      if(e.key==='ArrowLeft') go(-1);
+      if(e.key==='ArrowRight') go(1);
+    });
+  }
+
+  function initTheme(){
+    const saved = localStorage.getItem('qa_theme');
+    if(saved==='dark'){ 
+        document.body.classList.add('dark-mode'); 
+        state.darkMode=true; 
+    }
+    updateThemeIcon();
+    themeToggle.addEventListener('click', ()=>{
+      state.darkMode = !state.darkMode;
+      document.body.classList.toggle('dark-mode', state.darkMode);
+      localStorage.setItem('qa_theme', state.darkMode?'dark':'light');
+      updateThemeIcon();
+      if(state.submitted) buildCharts(state.lastResultData);
+    });
+  }
+  function updateThemeIcon(){
+    const i = themeToggle.querySelector('i');
+    i.classList.toggle('fa-moon', !state.darkMode);
+    i.classList.toggle('fa-sun',  state.darkMode);
+  }
+
+  function initFullscreen() {
+    // Integrated into Header Timer
+    const timerDisplay = document.getElementById('headerTimerDisp');
+    if (!timerDisplay) return;
+
+    timerDisplay.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    });
+  }
+
+  function initFontSizeControls() {
+      const fontBtn = document.getElementById('fontToggleBtn');
+      const fontSizes = [16, 18, 20, 22, 24]; // Larger sizes for clarity
+      let fontIndex = 0; // Starts at 16px
+
+      fontBtn.addEventListener('click', () => {
+          fontIndex = (fontIndex + 1) % fontSizes.length;
+          state.currentFontSize = fontSizes[fontIndex];
+          // Update the CSS Variable, not the root element
+          document.documentElement.style.setProperty('--dynamic-size', state.currentFontSize + 'px');
+      });
+  }
+
+  function initLanguageSwitcher() {
+      // Toggle order: Both -> Hindi -> English -> Both
+      const langOrder = ['both', 'hn', 'en'];
+
+      langToggleBtn.addEventListener('click', () => {
+          const currentIndex = langOrder.indexOf(state.currentLang);
+          const nextIndex = (currentIndex + 1) % langOrder.length;
+          state.currentLang = langOrder[nextIndex];
+
+          updateLangButton();
+          renderQuestion(state.current);
+      });
+  }
+
+  function updateLangButton() {
+      let label = 'BILI';
+      if (state.currentLang === 'hn') label = 'HIN';
+      if (state.currentLang === 'en') label = 'ENG';
+      langToggleBtn.textContent = label;
+  }
+
+  function translateText(text) {
+      if (!text) return text;
+      if (state.currentLang === 'both') return text;
+
+      // Check if string has HTML tags to decide between simple split and DOM traversal
+      const hasTags = /<[a-z][\s\S]*>/i.test(text);
+
+      if (hasTags) {
+          const div = document.createElement('div');
+          div.innerHTML = text;
+          walkAndTranslate(div);
+          return div.innerHTML;
+      } else {
+          // Plain text path
+          if (text.includes(' / ')) {
+              const parts = text.split(' / ');
+              if (parts.length >= 2) {
+                  const en = parts[0];
+                  const hn = parts.slice(1).join(' / ');
+                  return state.currentLang === 'hn' ? hn.trim() : en.trim();
+              }
+          }
+          return text;
+      }
+  }
+
+  function walkAndTranslate(node) {
+      if (node.nodeType === 3) { // Text node
+          const val = node.nodeValue;
+          if (val && val.includes(' / ')) {
+              const parts = val.split(' / ');
+              if (parts.length >= 2) {
+                  const en = parts[0];
+                  const hn = parts.slice(1).join(' / ');
+                  node.nodeValue = state.currentLang === 'hn' ? hn.trim() : en.trim();
+              }
+          }
+      } else if (node.nodeType === 1) { // Element node
+          for (let i = 0; i < node.childNodes.length; i++) {
+              walkAndTranslate(node.childNodes[i]);
+          }
+      }
+  }
+
+
+  function initSwipeNavigation() {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let touchStartY = 0;
+    let touchEndY = 0;
+    const swipeThreshold = 50; // Minimum distance for a swipe
+    const swipeRatio = 0.5; // Vertical distance should be less than half of horizontal
+
+    const swipeArea = document.querySelector('.quiz-main');
+
+    swipeArea.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    swipeArea.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+        if (state.submitted && !state.inReviewMode) return;
+
+        const dx = touchEndX - touchStartX;
+        const dy = touchEndY - touchStartY;
+
+        if (Math.abs(dx) > swipeThreshold && Math.abs(dy) < Math.abs(dx) * swipeRatio) {
+            if (dx < 0) {
+                go(1); // Swiped left
+            } else {
+                go(-1); // Swiped right
+            }
+        }
+    }
+  }
+
+  // ----- Timer -----
+  function initTimer(){
+    const start = Date.now();
+    const duration = state.totalTime*1000;
+    const end = start + duration;
+    tick(); state.timerInterval = setInterval(tick, 1000);
+    function tick(){
+      const now = Date.now();
+      const left = Math.max(0, end-now);
+      const m = String(Math.floor(left/60000)).padStart(2,'0');
+      const s = String(Math.floor((left%60000)/1000)).padStart(2,'0');
+
+      // Sidebar timer
+      document.getElementById('minutes').textContent = m;
+      document.getElementById('seconds').textContent = s;
+
+      // Header timer (NEW)
+      const headerTimer = document.getElementById('headerTimerDisp');
+      if(headerTimer) headerTimer.textContent = `${m}:${s}`;
+
+      const pct = (left/duration)*100;
+      const bar = document.getElementById('timeProgress');
+      bar.style.width = pct + '%';
+      if(left<=0){ clearInterval(state.timerInterval); submitQuiz(); }
+      else if(pct<25) bar.className='progress-bar bg-danger';
+      else if(pct<50) bar.className='progress-bar bg-warning';
+      else bar.className='progress-bar bg-primary';
+    }
+  }
+
+  // ----- Sidebar tiles -----
+  function buildQuestionTiles(){
+    qListGrid.innerHTML = '';
+    quizData.questions.forEach((_,i)=>{
+      const d = document.createElement('div');
+      d.className='q-tile'; d.textContent=i+1;
+      d.addEventListener('click', ()=>{
+        // Close modal IMMEDIATELY upon clicking, before rendering or anything else
+        document.getElementById('paletteModal').classList.remove('show');
+
+        if(!state.submitted) updateTime();
+        renderQuestion(i);
+      });
+      qListGrid.appendChild(d);
+    });
+  }
+
+  function updateTiles(){
+    document.querySelectorAll('.q-tile').forEach((el,idx)=>{
+      el.className='q-tile'; // Reset
+      if(state.submitted){
+          if(state.answers[idx] === quizData.questions[idx].correctIndex) el.classList.add('review-correct');
+          else if(state.answers[idx] !== null) el.classList.add('review-incorrect');
+          else el.classList.add('review-unattempted');
+      } else {
+        if(state.answers[idx] !== null) el.classList.add('answered');
+        if(state.markedForReview[idx]) el.classList.add('marked');
+      }
+      if(idx === state.current) el.classList.add('current');
+    });
+  }
+
+  // ----- Render question -----
+  function renderQuestion(idx){
+    if (idx < 0 || idx >= quizData.questions.length) return;
+
+    // Stop previous Question Timer
+    if (state.qTimerInterval) clearInterval(state.qTimerInterval);
+
+    state.current=idx;
+    const q=quizData.questions[idx];
+
+    // Live Accuracy Calculation
+    let accuracyBadge = '';
+    if (quizData.leaderboard && quizData.leaderboard.question_stats && quizData.leaderboard.question_stats[idx]) {
+        const stats = quizData.leaderboard.question_stats[idx];
+        if(stats.total > 0) {
+            const acc = Math.round((stats.correct / stats.total) * 100);
+            accuracyBadge = `<span class="q-accuracy" title="Based on ${stats.total} Telegram users"><i class="fas fa-bullseye me-1"></i>${acc}%</span>`;
+        }
+    }
+
+    // --- Marking Scheme Badge Logic ---
+    let markHtml = '';
+    const posMark = 1; // Assuming +1 for correct
+    const negMark = state.negativeMark;
+
+    if (!state.submitted) {
+        // Live Mode: Show full scheme
+        markHtml = `<span class="q-marks" title="Marking Scheme"><i class="fas fa-star-half-alt me-1"></i>+${posMark} / -${negMark}</span>`;
+    } else {
+        // Review Mode: Show result
+        const userAns = state.answers[idx];
+        const isCorrect = userAns === q.correctIndex;
+        const isSkipped = userAns === null;
+
+        if (isSkipped) {
+             markHtml = `<span class="q-marks text-muted">0</span>`;
+        } else if (isCorrect) {
+             markHtml = `<span class="q-marks positive">+${posMark}</span>`;
+        } else {
+             markHtml = `<span class="q-marks negative">-${negMark}</span>`;
+        }
+    }
+
+    // Question Card HTML
+    // Updated: Completely removed bottom margin and padding from header row
+    // Updated: Trimmed q.text and removed internal indentation artifacts from JSON source
+    let textContent = q.text;
+    if(typeof textContent === 'string') {
+        textContent = textContent.trim();
+        // Regex to replace newline followed by whitespace with a single space
+        // This collapses the indentation from the JSON string which causes layout gaps
+        textContent = textContent.replace(/\n\s+/g, ' '); 
+    }
+
+    let questionHtml=`
+      <div class="card-ui">
+        <div class="d-flex justify-content-between align-items-center mb-0 pb-0 border-bottom-0" style="min-height: 24px;">
+            <div class="q-meta-container">
+                <h5 class="fw-bold m-0" style="line-height:1;">Question ${idx+1}</h5>
+                <span class="q-timer"><i class="fas fa-stopwatch me-1"></i><span id="qTimerDisp">0s</span></span>
+                ${markHtml}
+                ${accuracyBadge}
+            </div>
+            ${q.reference ? `<div class="small opacity-75">${q.reference}</div>` : ''}
+        </div>
+        <!-- Removed mt-2 for tighter spacing -->
+        <div class="q-text mt-2">${translateText(textContent)}</div>
+        <div class="options">`;
+    q.options.forEach((opt,i)=>{
+      let cls='option-btn';
+      // User selection logic for Live Mode
+      if(state.answers[idx]===i) cls+=' selected';
+
+      // Review Mode Logic
+      if(state.submitted){
+        if(i===q.correctIndex) cls+=' correct';
+        else if(state.answers[idx]===i) cls+=' incorrect';
+      }
+
+      // Add Checkmark span (only visible via CSS if selected)
+      questionHtml += `<button class="${cls}" data-i="${i}">
+          <span>${translateText(opt)}</span>
+          <span class="user-check"><i class="fas fa-check-circle"></i></span>
+      </button>`;
+    });
+    const translatedExplanation = translateText(q.explanation || 'Not available.');
+    questionHtml += `</div>
+        ${state.submitted ? `<div class="explanation mt-3"><strong>Explanation:</strong> ${translatedExplanation}</div>` : ''}
+      </div>
+    `;
+    questionArea.innerHTML = questionHtml;
+
+    // Start per-question timer logic (Visual only)
+    if (!state.submitted) {
+        // Start from time already spent
+        let secondsSpent = Math.floor(state.timePerQ[idx] || 0);
+        const timerEl = document.getElementById('qTimerDisp');
+        if(timerEl) {
+            timerEl.textContent = secondsSpent + 's';
+            state.qTimerInterval = setInterval(() => {
+                secondsSpent++;
+                timerEl.textContent = secondsSpent + 's';
+            }, 1000);
+        }
+    } else {
+        // Show static time if submitted
+         const timerEl = document.getElementById('qTimerDisp');
+         if(timerEl) timerEl.textContent = Math.floor(state.timePerQ[idx] || 0) + 's';
+    }
+
+
+    // Navigation Buttons HTML
+    let buttonsHtml = `
+      <button id="prevBtn" class="btn btn-outline-secondary btn-nav"><i class="fas fa-chevron-left me-2"></i>Previous</button>
+      <button id="markBtn" class="btn btn-outline-info btn-nav">
+          ${state.markedForReview[idx] ? '<i class="fas fa-bookmark me-2"></i>Unmark' : '<i class="far fa-bookmark me-2"></i>Mark for Review'}
+      </button>
+      <button id="nextBtn" class="btn btn-primary btn-nav">Next<i class="fas fa-chevron-right ms-2"></i></button>
+    `;
+    quizNav.innerHTML = buttonsHtml;
+
+
+    // Add event listeners to new elements
+    document.getElementById('prevBtn').addEventListener('click', () => go(-1));
+    document.getElementById('nextBtn').addEventListener('click', () => go(1));
+    document.getElementById('markBtn').addEventListener('click', toggleMark);
+
+    if(state.submitted) {
+        document.getElementById('markBtn').style.display = 'none';
+    }
+
+    document.querySelectorAll('.option-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        if(state.submitted) return;
+        clickSound.currentTime=0; clickSound.play();
+        const i = parseInt(btn.dataset.i);
+        state.answers[state.current] = (state.answers[state.current] === i) ? null : i; // Allow un-selecting
+        renderQuestion(state.current); // Re-render to show selection change
+        updateStats();
+        updateTiles();
+      });
+    });
+
+    updateTiles();
+    updateProgress();
+
+    // Sound for review mode
+    if(state.inReviewMode && state.lastSoundIdx!==idx){
+      state.lastSoundIdx=idx;
+      const isAttempted = state.answers[idx]!==null;
+      const isCorrect = isAttempted && state.answers[idx]===q.correctIndex;
+      if(isAttempted){
+        setTimeout(()=>{ (isCorrect?correctSound:wrongSound).play(); }, 250);
+      }
+    }
+  }
+
+  function go(dir){
+    const i = state.current + dir;
+    if(i>=0 && i<quizData.questions.length){
+      if(!state.submitted) updateTime();
+      renderQuestion(i);
+    }
+  }
+
+  function toggleMark() {
+    state.markedForReview[state.current] = !state.markedForReview[state.current];
+    renderQuestion(state.current); // Re-render to update button text
+    updateTiles();
+    updateStats();
+  }
+
+  function updateTime(){
+    const now = new Date();
+    state.timePerQ[state.current] += (now - state.startTime)/1000;
+    state.startTime = now;
+  }
+
+  function updateStats() {
+    const answeredCount = state.answers.filter(a => a !== null).length;
+    const markedCount = state.markedForReview.filter(m => m).length;
+    const totalCount = quizData.questions.length;
+    document.getElementById('statAnswered').textContent = answeredCount;
+    document.getElementById('statUnanswered').textContent = totalCount - answeredCount;
+    document.getElementById('statMarked').textContent = markedCount;
+    document.getElementById('statTotal').textContent = totalCount;
+  }
+
+  function updateProgress() {
+      const answeredCount = state.answers.filter(a => a !== null).length;
+      const totalCount = quizData.questions.length;
+      const percent = totalCount > 0 ? (answeredCount / totalCount) * 100 : 0;
+      const progressBar = document.getElementById('thinProgressBarInner');
+      if (progressBar) {
+          progressBar.style.width = `${percent}%`;
+      }
+  }
+
+  // ----- Submit & Results -----
+  function submitQuiz(){
+    if(state.submitted) return;
+
+    // Explicitly CLOSE the palette if it is open
+    document.getElementById('paletteModal').classList.remove('show');
+
+    clearInterval(state.timerInterval);
+    if(state.qTimerInterval) clearInterval(state.qTimerInterval); // Stop question timer
+
+    updateTime();
+    state.submitted=true;
+
+    let correct=0, incorrect=0, unattempted=0, score=0, neg=0;
+    state.answers.forEach((a,i)=>{
+      if(a===null){ unattempted++; }
+      else if(a===quizData.questions[i].correctIndex){ correct++; score+=1; }
+      else { incorrect++; score-=state.negativeMark; neg+=state.negativeMark; }
+    });
+
+    state.avgTime = state.timePerQ.reduce((s,t)=>s+t,0)/quizData.questions.length;
+    const pct = (score/quizData.questions.length)*100;
+
+    questionArea.style.display = 'none';
+    quizNav.style.display = 'none';
+    submitBtn.style.display = 'none';
+    document.querySelector('.quiz-main-header').style.display = 'none';
+
+    renderResults({correct, incorrect, unattempted, score, neg, pct});
+    resultsContainer.style.display = 'block';
+
+    updateTiles();
+
+    if(pct>=70){ confetti(); correctSound.play(); }
+    else if(pct<50){ wrongSound.play(); }
+  }
+
+  function renderResults(resData) {
+      const { correct, incorrect, unattempted, score, neg, pct } = resData;
+      const total = quizData.questions.length;
+      state.lastResultData = resData; // Save for redrawing charts on theme change
+
+      let html = `
+        <div class="text-center">
+            <h2 class="fw-bold">Quiz Completed!</h2>
+            <p>Here is your performance summary.</p>
+            <div class="final-score">${pct.toFixed(1)}%</div>
+            <div class="fs-4 fw-bold mb-4">${score.toFixed(2)} / ${total}</div>
+        </div>
+
+        <ul class="nav nav-pills justify-content-center mb-3 results-tabs" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation"><button class="nav-link active" id="pills-summary-tab" data-bs-toggle="pill" data-bs-target="#pills-summary" type="button" role="tab">Summary</button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" id="pills-analysis-tab" data-bs-toggle="pill" data-bs-target="#pills-analysis" type="button" role="tab">Analysis</button></li>
+        </ul>
+
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-summary" role="tabpanel">
+            <div class="row g-3">
+                <div class="col-md-6"><div class="p-3 bg-light rounded d-flex justify-content-between"><span>Total Questions</span><span class="fw-bold">${total}</span></div></div>
+                <div class="col-md-6"><div class="p-3 bg-light rounded d-flex justify-content-between"><span>Correct</span><span class="fw-bold text-success">${correct}</span></div></div>
+                <div class="col-md-6"><div class="p-3 bg-light rounded d-flex justify-content-between"><span>Incorrect</span><span class="fw-bold text-danger">${incorrect}</span></div></div>
+                <div class="col-md-6"><div class="p-3 bg-light rounded d-flex justify-content-between"><span>Unattempted</span><span class="fw-bold text-warning">${unattempted}</span></div></div>
+                <div class="col-md-6"><div class="p-3 bg-light rounded d-flex justify-content-between"><span>Negative Marks</span><span class="fw-bold text-danger">-${neg.toFixed(2)}</span></div></div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="pills-analysis" role="tabpanel">
+            <div class="chart-container mb-3"><canvas id="performanceChart"></canvas></div>
+            <div class="chart-container" style="height: 300px;"><canvas id="timeAnalysisChart"></canvas></div>
+
+            <h5 class="fw-bold mt-5 mb-3 text-center">Telegram Leaderboard</h5>
+            <div id="leaderboardSection"></div>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+            <button id="reviewBtn" class="btn btn-primary btn-lg"><i class="fas fa-search me-2"></i>Review Answers</button>
+        </div>
+      `;
+      resultsContainer.innerHTML = html;
+
+      document.getElementById('reviewBtn').addEventListener('click', reviewMode);
+
+      // Render Leaderboard
+      const lbSection = document.getElementById('leaderboardSection');
+      if (quizData.leaderboard && quizData.leaderboard.rankings && quizData.leaderboard.rankings.length > 0) {
+          let lbHtml = `<table class="leaderboard-table">
+              <thead><tr><th>Rank</th><th>User</th><th>Score</th><th>Acc</th></tr></thead>
+              <tbody>`;
+
+          quizData.leaderboard.rankings.forEach((rank, i) => {
+              const rankClass = i < 3 ? `rank-${i+1}` : '';
+              lbHtml += `<tr>
+                  <td class="${rankClass}">#${i+1}</td>
+                  <td>${rank.name}</td>
+                  <td>${rank.score.toFixed(1)}</td>
+                  <td>${rank.accuracy.toFixed(0)}%</td>
+              </tr>`;
+          });
+
+          lbHtml += `</tbody></table>`;
+          lbSection.innerHTML = lbHtml;
+      } else {
+          lbSection.innerHTML = `<div class="text-muted small text-center p-3">No Telegram comparison data available yet.</div>`;
+      }
+
+      // Trigger chart build after tab is shown
+      const analysisTab = document.getElementById('pills-analysis-tab');
+      analysisTab.addEventListener('shown.bs.tab', () => buildCharts(resData), { once: true });
+  }
+
+  let performanceChartInstance, timeAnalysisChartInstance;
+  function buildCharts(res){
+    const {correct, incorrect, unattempted} = res;
+    Chart.defaults.color = state.darkMode ? '#e8eaed' : '#6c757d';
+
+    if (performanceChartInstance) performanceChartInstance.destroy();
+    performanceChartInstance = new Chart(document.getElementById('performanceChart').getContext('2d'),{
+      type:'doughnut',
+      data:{ labels:['Correct','Incorrect','Unattempted'],
+        datasets:[{ data:[correct,incorrect,unattempted],
+          backgroundColor:['#20c997','#e63946','#ffb703'], borderWidth: 0 }]},
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'bottom'}} }
+    });
+
+    const labels = Array.from({length:quizData.questions.length},(_,i)=>`Q${i+1}`);
+    const correctTimes = state.timePerQ.map((t,i) => state.answers[i] === quizData.questions[i].correctIndex ? t : 0);
+    const incorrectTimes = state.timePerQ.map((t,i) => (state.answers[i] !== null && state.answers[i] !== quizData.questions[i].correctIndex) ? t : 0);
+
+    if(timeAnalysisChartInstance) timeAnalysisChartInstance.destroy();
+    timeAnalysisChartInstance = new Chart(document.getElementById('timeAnalysisChart').getContext('2d'),{
+      type:'bar',
+      data:{ labels,
+        datasets:[
+          {label:'Correct', data:correctTimes, backgroundColor:'rgba(32, 201, 151, 0.7)'},
+          {label:'Incorrect', data:incorrectTimes, backgroundColor:'rgba(230, 57, 70, 0.7)'}
+        ]},
+      options:{ responsive:true, maintainAspectRatio:false, indexAxis: 'x',
+        scales:{ x:{stacked:true, grid: {color: state.darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}},
+                 y:{stacked:true, title:{display:true,text:'Time (s)'}, grid: {color: state.darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}} },
+      }
+    });
+  }
+
+  function reviewMode(){
+    state.inReviewMode=true; state.lastSoundIdx=-1;
+    questionArea.style.display='block';
+    quizNav.style.display = 'flex';
+    resultsContainer.style.display='none';
+    document.querySelector('.quiz-main-header').style.display = 'flex';
+    renderQuestion(0);
+  }
+
+  function confetti(){
+    const colors=['#6a5af9','#f72585','#20c997','#ffb703'];
+    for(let i=0;i<100;i++){
+      const d=document.createElement('div');
+      d.style.cssText=`position:fixed;width:10px;height:10px;top:-10px;left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};z-index:1300;`;
+      document.body.appendChild(d);
+      const dy = Math.random()*500+500, rot = Math.random()*360;
+      const anim = d.animate([{transform:'translateY(0) rotate(0)',opacity:1},{transform:`translateY(${dy}px) rotate(${rot}deg)`,opacity:0}],
+        {duration:Math.random()*2000+2000, easing:'ease-out'});
+      anim.onfinish=()=>d.remove();
+    }
+  }
+})();
+</script>
